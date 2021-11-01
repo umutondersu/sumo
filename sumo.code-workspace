@@ -1,0 +1,13 @@
+{
+	"folders": [
+        {
+            "name": "sumo_frontend",
+            "path": "sumo_frontend"
+        },
+        {
+            "name": "sumo_backend",
+            "path": "sumo_backend"
+        }
+    ],
+    "settings": {}
+}
