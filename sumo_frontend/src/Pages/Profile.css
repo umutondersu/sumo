@@ -1,0 +1,12 @@
+.ProfilePage  {
+    padding-top: 20px;
+}
+
+.Profile {
+    width: 60%;
+    margin: auto;
+}
+
+.top {
+    display: flex;
+}
