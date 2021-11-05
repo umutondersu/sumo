@@ -25,19 +25,7 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
         if (err) throw err;
         console.log(result[0].password);
       })
-    
-    // password hash
-    const hashed = await bcrypt.hash(password, 10);
-
-    const valid = await bcrypt.compare(passwordrepeat, hashed);
-    if (valid){
-        res.send("Valid");
-    }
-    else {
-        res.send("Invalid");
-    }
-
-    //password check 
+        //password check 
     //name check
     if (password !== passwordrepeat) {
         res.redirect(url.format({
@@ -54,6 +42,20 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
         res.send("name null")
     }
 });
+    
+    
+    // password hash
+    const hashed = await bcrypt.hash(password, 10);
+
+    const valid = await bcrypt.compare(passwordrepeat, hashed);
+    if (valid){
+        res.send("Valid");
+    }
+    else {
+        res.send("Invalid");
+    }
+
+
 
 router.post('/login', (req, res) => {
     
