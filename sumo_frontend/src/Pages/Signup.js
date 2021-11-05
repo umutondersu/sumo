@@ -1,5 +1,4 @@
 import React from 'react'
-<<<<<<< HEAD
 import { Link} from 'react-router-dom'
 import './Signup.css'
 import { useState, useEffect } from 'react'
@@ -14,6 +13,9 @@ function Signup() {
         if (error === "password_mismatch") {
             setPasswordError("Password Mismatch");
         }
+        if (error === "password_empty") {
+            setPasswordError("Password E");
+        }
         else if (error === "email_exists") {
             setEmailError("Email Exists")
         }
@@ -22,12 +24,6 @@ function Signup() {
         }
     },[error]);
     
-=======
-import { Link } from 'react-router-dom'
-import './Signup.css'
-
-function Signup() {
->>>>>>> 9e4f80da597985332bc72463ebe671cc0e07b2b4
     return (
         <div className="SignupPage">
             <div className="Signup">
@@ -37,7 +33,6 @@ function Signup() {
                 <div className="right">
                     <div className="form">
                         <h1>Signup</h1>
-<<<<<<< HEAD
                         <form action='auth/signup' method="post">
                             <div className="input-group">
                                 <div className="name">
@@ -63,17 +58,6 @@ function Signup() {
                                 <input type="password" name="passwordrepeat" id="passwordrepeat" placeholder="Password Repeat"/>
                                 <p className="errorMessage">{passwordMessage}</p>
                             </label>
-=======
-                        <form action="signup" method="post">
-                            <label htmlFor="username">Username</label>
-                            <input type="text" name="username" id="username" placeholder="Username"/>
-                            <label htmlFor="email">Email</label>
-                            <input type="email" name="email" id="email" placeholder="Email"/>
-                            <label htmlFor="password">Password</label>
-                            <input type="password" name="password" id="password" placeholder="Password"/>
-                            <label htmlFor="passwordrepeat">Password Repeat</label>
-                            <input type="password" name="passwordrepeat" id="passwordrepeat" placeholder="Password Repeat"/>
->>>>>>> 9e4f80da597985332bc72463ebe671cc0e07b2b4
                             <button type="submit">Sign Up</button>
                         </form>
                         <Link to="" className="button alreadyhaveaccount">Already have an account?</Link>
