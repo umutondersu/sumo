@@ -13,8 +13,8 @@ function Login() {
                     <div className="form">
                         <h1>Login</h1>
                         <form action="login" method="post">
-                            <label htmlFor="username/email">Username / Email</label>
-                            <input type="text" name="username/email" id="username/email" placeholder="Username / Email"/>
+                            <label htmlFor="email">Email</label>
+                            <input type="text" name="email" id="email" placeholder="Email"/>
                             <label htmlFor="password">Password</label>
                             <input type="password" name="password" id="password" placeholder="Password"/>
                             <button type="submit">Sign In</button>

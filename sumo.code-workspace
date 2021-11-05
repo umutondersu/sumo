@@ -5,7 +5,6 @@
             "path": "sumo_frontend"
         },
         {
-            "name": "sumo_backend",
             "path": "sumo_backend"
         }
     ],
