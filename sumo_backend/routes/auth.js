@@ -34,7 +34,7 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
                "error": "password_mismatch",
              }
           })
-    }
+    });
     else if (name) {
         res.send(name);
     }
@@ -64,3 +64,4 @@ router.post('/login', (req, res) => {
 module.exports = router;
 
 //testing
+//testing2
