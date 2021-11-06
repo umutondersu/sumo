@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 function Signup() {
 
     const error = new URLSearchParams(window.location.search).get("error")
+    const [databaseMessage, setDatabaseError] = useState("");
     const [emailMessage, setEmailError] = useState("");
     const [passwordMessage, setPasswordError] = useState("");
 
@@ -13,14 +14,20 @@ function Signup() {
         if (error === "password_mismatch") {
             setPasswordError("Password Mismatch");
         }
-        if (error === "password_empty") {
-            setPasswordError("Password E");
+        else if (error === "password_empty") {
+            setPasswordError("Password Empty");
         }
         else if (error === "email_exists") {
             setEmailError("Email Exists")
         }
         else if (error === "invalid_email") {
             setEmailError("Invalid Email")
+        }
+        else if (error === "email_empty") {
+            setEmailError("Email Empty")
+        }
+        else if (error === "database_error") {
+            setDatabaseError("Database Error")
         }
     },[error]);
     
@@ -33,19 +40,11 @@ function Signup() {
                 <div className="right">
                     <div className="form">
                         <h1>Signup</h1>
+                        <p className="errorMessage">{databaseMessage}</p>
                         <form action='auth/signup' method="post">
-                            <div className="input-group">
-                                <div className="name">
-                                    <label htmlFor="name">Name (Optional)
-                                        <input type="text" name="name" id="name" placeholder="Name"/>
-                                    </label>
-                                </div>
-                                <div className="surname">
-                                    <label htmlFor="surname">Surname (Optional)
-                                        <input type="text" name="surname" id="surname" placeholder="Surname"/>
-                                    </label>
-                                </div>
-                            </div>
+                            <label htmlFor="name">Name (Optional)
+                                <input type="text" name="name" id="name" placeholder="Name"/>
+                                </label>
                             <label htmlFor="email">Email
                                 <input type="email" name="email" id="email" placeholder="Email"/>
                                 <p className="errorMessage">{emailMessage}</p>
