@@ -136,7 +136,6 @@ router.post('/login', body('email').isEmail(), (req, res) => {
 
     db.query("SELECT * FROM customer WHERE email = ?", [email], async (err, rows, fields) => {
         if (err) {
-            console.log("aaaaaaa")
             res.redirect(url.format({
                 pathname:"/",
                 query: {
@@ -151,7 +150,6 @@ router.post('/login', body('email').isEmail(), (req, res) => {
 
             const valid = await bcrypt.compare(password, cPwd);
             if (!valid){
-                console.log("aaaaaaaaaaaa")
                 res.redirect(url.format({
                     pathname:"/",
                     query: {
