@@ -42,6 +42,10 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
         });
     }
     else {
+    const {name, surname, email, password, passwordrepeat} = req.body;
+    const errors = validationResult(req);
+    
+    if (!errors.isEmpty()) {
         res.redirect(url.format({
             pathname:"/Signup",
             query: {
@@ -49,7 +53,6 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
             }
         }));
     }
-
     // password hash
 
     var cName = "";
@@ -104,6 +107,39 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
 
 router.post('/login', body('email').isEmail(), (req, res) => {
     const { email, password, error } = req.body;
+    db.query("SELECT * FROM customer",function (err, result, fields) {
+        if (err) throw err;
+        console.log(result[0].password);
+      })
+        //password check 
+    //name check
+    if (password !== passwordrepeat) {
+        res.redirect(url.format({
+            pathname:"/Signup",
+            query: {
+               "error": "password_mismatch",
+             }
+          })
+    });
+    else if (name) {
+        res.send(name);
+    }
+    else {
+        res.send("name null")
+    }
+});
+    
+    
+    // password hash
+    const hashed = await bcrypt.hash(password, 10);
+
+    const valid = await bcrypt.compare(passwordrepeat, hashed);
+    if (valid){
+        res.send("Valid");
+    }
+    else {
+        res.send("Invalid");
+    }
 
     const errors = validationResult(req);
     if (email) {
