@@ -79,9 +79,11 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
         cName = name;
     }
     else {
-        cName = "Anonymous ";
+        cName = "Anonymous";
     }
 
+
+    const hashed = bcrypt.hashSync(password, 10);
     db.query("INSERT INTO customer (email, password, name) VALUES(?, ?, ?)", [email, hashed, cName], function (err, rows, fields) {
         if (err) {
             res.redirect(url.format({
@@ -94,7 +96,7 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
         }
         else {
             res.redirect(url.format({
-                pathname:"/Login",
+                pathname:"/",
             }));
         }
     });
