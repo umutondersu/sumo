@@ -1,0 +1,8 @@
+GET http://localhost:5000/auth/profile
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF0YXNhcmlrYXlhQHNhYmFuY2l1bml2LmVkdSIsImlhdCI6MTYzNjIyOTA1NH0.hqU333H0kMjmaJbJdDu6YbjvcIaw-EAAceB3dPo12Q4
+
+###
+
+POST http://localhost:5000/auth/login
+Email: atasarikaya@sabanciuniv.edu
+Password: password

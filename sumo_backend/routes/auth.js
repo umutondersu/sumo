@@ -5,6 +5,7 @@ const url = require('url');
 const db = require('../database/database');
 const { body, validationResult } = require('express-validator');
 const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 dotenv.config();
 
 
@@ -49,7 +50,6 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
             }
         }));
     }
-
     // password hash
 
     var cName = "";
@@ -79,7 +79,7 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
         cName = name;
     }
     else {
-        cName = "Anonymous";
+        cName = "Anonymous ";
     }
 
     db.query("INSERT INTO customer (email, password, name) VALUES(?, ?, ?)", [email, hashed, cName], function (err, rows, fields) {
@@ -100,10 +100,58 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
     });
 
 });
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    console.log("token    :    " + authHeader);
+    if (authHeader == null) {
+        res.redirect(url.format({
+            pathname:"/",
+        }));
+    }
+    else {
+        jwt.verify(authHeader, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/",
+                }));
+            }
+            req.user = user;
+            next();
+        });
+    }
+
+    
+}
+
+router.get('/profile', authenticateToken, (req, res)=> {
+    db.query("SELECT * FROM customer WHERE email = ?", [req.user.email], async (err, rows, fields) => {
+        if (err) {
+            res.redirect(url.format({
+                pathname:"/Profile",
+                query: {
+                    "error": "database_error",
+                }
+            }));
+            throw err;
+        }
+        else if (rows[0]) {
+            res.json(rows[0]);
+        }
+        else {
+            res.redirect(url.format({
+                pathname:"/",
+                query: {
+                    "error": "user_not_found",
+                }
+            }));
+        }
+    });
+});
     
 
 router.post('/login', body('email').isEmail(), (req, res) => {
-    const { email, password, error } = req.body;
+    const { email, password} = req.body;
 
     const errors = validationResult(req);
     if (email) {
@@ -133,49 +181,62 @@ router.post('/login', body('email').isEmail(), (req, res) => {
             }
         }));
     }
-
-    db.query("SELECT * FROM customer WHERE email = ?", [email], async (err, rows, fields) => {
-        if (err) {
-            res.redirect(url.format({
-                pathname:"/",
-                query: {
-                    "error": "database_error",
-                }
-            }));
-            throw err;
-        }
-        if (rows[0]) {
-
-            var cPwd = rows[0].password;
-
-            const valid = await bcrypt.compare(password, cPwd);
-            if (!valid){
+    else {
+        db.query("SELECT * FROM customer WHERE email = ?", [email], async (err, rows, fields) => {
+            if (err) {
                 res.redirect(url.format({
                     pathname:"/",
                     query: {
-                        "error": "invalid_password",
+                        "error": "database_error",
                     }
                 }));
+                throw err;
+            }
+            if (rows[0]) {
+
+                var cPwd = rows[0].password;
+
+                const valid = await bcrypt.compare(password, cPwd);
+                if (!valid){
+                    res.redirect(url.format({
+                        pathname:"/",
+                        query: {
+                            "error": "invalid_password",
+                        }
+                    }));
+                }
+                else {
+                    const user = {
+                        email: rows[0].email,
+                        name: rows[0].name
+                    }
+                    const accessToken = jwt.sign(user, process.env.JWT_SECRET);
+                    /*res.redirect(url.format({
+                        pathname:"/Profile",
+                    }));*/
+                    res.json({
+                        name: user.name,
+                        email: user.email,
+                        accessToken
+                    })
+                }
             }
             else {
                 res.redirect(url.format({
-                    pathname:"/Profile",
+                    pathname:"/",
+                    query: {
+                        "error": "user_not_found",
+                    }
                 }));
             }
-        }
-        else {
-            res.redirect(url.format({
-                pathname:"/",
-                query: {
-                    "error": "user_not_found",
-                }
-            }));
-        }
-    });
+        });
+    }
+
+    
 
 
 });
 
-router.post('/logout', (req, res) => {
+router.post('/logout', authenticateToken, (req, res) => {
 });
 module.exports = router;
