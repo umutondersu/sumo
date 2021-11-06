@@ -187,7 +187,6 @@ router.post('/login', body('email').isEmail(), (req, res) => {
 
             const valid = await bcrypt.compare(password, cPwd);
             if (!valid){
-                console.log("aaaaaaaaaaaa")
                 res.redirect(url.format({
                     pathname:"/",
                     query: {
