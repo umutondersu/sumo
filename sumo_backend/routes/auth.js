@@ -6,6 +6,7 @@ const db = require('../database/database');
 const { body, validationResult } = require('express-validator');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
+
 dotenv.config();
 
 
@@ -150,6 +151,14 @@ router.get('/profile', authenticateToken, (req, res)=> {
         }
     });
 });
+
+router.get("/isLogin", (req, res) => {
+    if (req.session.user) {
+      res.send({ loggedIn: true, user: req.session.user });
+    } else {
+      res.send({ loggedIn: false });
+    }
+  });
     
 
 router.post('/login', body('email').isEmail(), (req, res) => {
@@ -158,40 +167,28 @@ router.post('/login', body('email').isEmail(), (req, res) => {
     const errors = validationResult(req);
     if (email) {
         if (!errors.isEmpty()) {
-            res.redirect(url.format({
-                pathname:"/",
-                query: {
-                    "error": "invalid_email",
-                }
-            }));
+            res.json({
+                error: "invalid_email"
+            })
         }
     }
     else {
-        res.redirect(url.format({
-            pathname:"/",
-            query: {
-                "error": "email_empty",
-            }
-        }));
+        res.json({
+            error: "email_empty"
+        })
     }
     
     if (!password) {
-        res.redirect(url.format({
-            pathname:"/",
-            query: {
-                "error": "password_empty",
-            }
-        }));
+        res.json({
+            error: "password_empty"
+        })
     }
     else {
         db.query("SELECT * FROM customer WHERE email = ?", [email], async (err, rows, fields) => {
             if (err) {
-                res.redirect(url.format({
-                    pathname:"/",
-                    query: {
-                        "error": "database_error",
-                    }
-                }));
+                res.json({
+                    error: "database_error"
+                })
                 throw err;
             }
             if (rows[0]) {
@@ -200,12 +197,9 @@ router.post('/login', body('email').isEmail(), (req, res) => {
 
                 const valid = await bcrypt.compare(password, cPwd);
                 if (!valid){
-                    res.redirect(url.format({
-                        pathname:"/",
-                        query: {
-                            "error": "invalid_password",
-                        }
-                    }));
+                    res.json({
+                        error: "invalid_password"
+                    })
                 }
                 else {
                     const user = {
@@ -216,20 +210,20 @@ router.post('/login', body('email').isEmail(), (req, res) => {
                     /*res.redirect(url.format({
                         pathname:"/Profile",
                     }));*/
-                    res.json({
+
+                    req.session.user = user;
+                    res.send(user);
+                    /*res.json({
                         name: user.name,
                         email: user.email,
                         accessToken
-                    })
+                    })*/
                 }
             }
             else {
-                res.redirect(url.format({
-                    pathname:"/",
-                    query: {
-                        "error": "user_not_found",
-                    }
-                }));
+                res.json({
+                    error: "user_not_found"
+                })
             }
         });
     }
