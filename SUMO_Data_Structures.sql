@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `Income` (
 
 CREATE TABLE IF NOT EXISTS `SpendingHabits` (
   `habit_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `customer_Id` VARCHAR(32) NOT NULL,
+  `customer_Id` INT(11) NOT NULL,
   `spending_Type` VARCHAR(255) NOT NULL,
   `spending_Value` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`habit_Id`),
