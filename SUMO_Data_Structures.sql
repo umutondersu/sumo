@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS `Admin` (
 
 CREATE TABLE IF NOT EXISTS `Customer` (
   `user_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(32) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255),
@@ -32,10 +31,11 @@ CREATE TABLE IF NOT EXISTS `Income` (
 
 CREATE TABLE IF NOT EXISTS `SpendingHabits` (
   `habit_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `customer_Id` VARCHAR(32) NOT NULL,
+  `customer_Id` INT(11) NOT NULL,
   `spending_Type` VARCHAR(255) NOT NULL,
   `spending_Value` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`habit_Id`),
+  FOREIGN KEY (`customer_Id`) REFERENCES Customer(`user_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Savings` (
