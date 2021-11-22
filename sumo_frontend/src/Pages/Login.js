@@ -3,15 +3,13 @@ import './Login.css'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
-import { Redirect } from 'react-router-dom'
 
 function Login() {
-    const [databaseMessage, setDatabaseError] = useState("");
+    const [generalMessage, setGeneralError] = useState("");
     const [emailMessage, setEmailError] = useState("");
     const [passwordMessage, setPasswordError] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isSuccess, setSuccess] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -38,7 +36,10 @@ function Login() {
                     setEmailError("Email Empty")
                 }
                 else if (res.data.error === "database_error") {
-                    setDatabaseError("Database Error")
+                    setGeneralError("Database Error")
+                }
+                else if (res.data.error === "user_not_found") {
+                    setGeneralError("User not found");
                 }
             }
             if (res.data.email) {
@@ -59,7 +60,7 @@ function Login() {
                 <div className="right">
                     <div className="form">
                         <h1>Login</h1>
-                        <p className="errorMessage">{databaseMessage}</p>
+                        <p className="errorMessage">{generalMessage}</p>
                         <form onSubmit={handleLogin}>
                             <label htmlFor="email">Email
                                 <input type="text" name="email" id="email" placeholder="Email" onChange={(e)=> {setEmail(e.target.value)}}/>

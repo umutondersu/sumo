@@ -123,42 +123,73 @@ function authenticateToken(req, res, next) {
             next();
         });
     }
-
-    
 }
 
-router.get('/profile', authenticateToken, (req, res)=> {
-    db.query("SELECT * FROM customer WHERE email = ?", [req.user.email], async (err, rows, fields) => {
-        if (err) {
-            res.redirect(url.format({
-                pathname:"/Profile",
-                query: {
-                    "error": "database_error",
-                }
-            }));
-            throw err;
-        }
-        else if (rows[0]) {
-            res.json(rows[0]);
-        }
-        else {
-            res.redirect(url.format({
-                pathname:"/",
-                query: {
-                    "error": "user_not_found",
-                }
-            }));
-        }
-    });
+router.get("/habits", (req, res) => {
+    if (req.session.user) {
+        db.query("SELECT * FROM spendinghabits WHERE customer_Id = ?", [req.session.user.user_Id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Profile",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+
+            const habits = JSON.parse(JSON.stringify(rows));
+
+            if (habits.length > 0) {
+                res.json(rows);
+            }
+            else {
+                res.json([]);
+            }
+        });
+    }
+    else {
+        res.send({});
+    }
+});
+
+router.get('/profile', (req, res)=> {
+    if (req.session.user) {
+
+        db.query("SELECT * FROM customer WHERE email = ?", [req.session.user.email], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Profile",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            else if (rows[0]) {
+                res.json(rows[0]);
+            }
+            else {
+                res.redirect(url.format({
+                    pathname:"/",
+                    query: {
+                        "error": "user_not_found",
+                    }
+                }));
+            }
+        });
+
+    }
+    
 });
 
 router.get("/isLogin", (req, res) => {
     if (req.session.user) {
-      res.send({ loggedIn: true, user: req.session.user });
+        res.send({ loggedIn: true, user: req.session.user });
     } else {
-      res.send({ loggedIn: false });
+        res.send({ loggedIn: false });
     }
-  });
+});
     
 
 router.post('/login', body('email').isEmail(), (req, res) => {
@@ -204,7 +235,8 @@ router.post('/login', body('email').isEmail(), (req, res) => {
                 else {
                     const user = {
                         email: rows[0].email,
-                        name: rows[0].name
+                        name: rows[0].name,
+                        user_Id: rows[0].user_Id
                     }
                     const accessToken = jwt.sign(user, process.env.JWT_SECRET);
                     /*res.redirect(url.format({
@@ -212,6 +244,7 @@ router.post('/login', body('email').isEmail(), (req, res) => {
                     }));*/
 
                     req.session.user = user;
+                    
                     res.send(user);
                     /*res.json({
                         name: user.name,

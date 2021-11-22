@@ -1,17 +1,63 @@
-.ProfilePage  {
-    padding-top: 20px;
-}
+
 
 .Profile {
-    width: 60%;
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.profileleft {
+    width: 30%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+}
+.profileInfo {
+    padding: 1.5rem;
+}
+
+.profileleft .profileInfo h2 {
+    text-align: center;
+}
+
+.profileleft .profileInfo h4 {
+    font-weight: 400;
+}
+
+
+.profileInfo .avatar {
+    width: fit-content;
     margin: auto;
 }
 
-.top {
-    display: flex;
-    align-content: space-evenly;   
+.profileright {
+    width: 60%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1.5rem;
 }
 
-.top h2 {
-    margin-left: 20px;
+
+.profileright .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #000;
+}
+
+.profileright .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+    color: #000;
+}
+
+.profileright .MuiTabs-indicator {
+    background-color: #44dd8c;
+}
+
+.habitsFormInput {
+    display: flex;
+}
+
+.habitsInput label {
+    display: block;
+    width: 100%;
 }

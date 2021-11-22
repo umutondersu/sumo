@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoute = require('./routes/auth');
+const habitsRoute = require('./routes/profile');
 const mysql = require('mysql');
 const db = require('./database/database');
 const jwt = require('jsonwebtoken');
@@ -21,15 +22,15 @@ app.use(express.urlencoded({ extended: false}));
 
 app.use(
     session({
-      key: "email",
-      secret: "SumoSuperSecret",
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        expires: 60000* 60 * 24,
-      },
+        key: "email",
+        secret: "SumoSuperSecret",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            expires: 60000* 60 * 24,
+        },
     })
-  );
+);
 
 app.use('/auth', authRoute);
-//app.use("*", (req, res) => res.status(404).json({error: "not found"}));
+app.use('/profile', habitsRoute);
