@@ -55,9 +55,38 @@
 
 .habitsFormInput {
     display: flex;
+    border: 1px solid #a1a1a1;
+}
+
+.HabitEditBtn {
+    margin-left: 30px;
+}
+
+.HabitSaveBtn {
+    margin-left: 30px;
+}
+
+.HabitAddBtn {
+    margin-left: 30px;
+}
+
+.habitsInput {
+    margin-left: 30px;
 }
 
 .habitsInput label {
     display: block;
     width: 100%;
+}
+
+.Habit {
+    display: flex;
+    border: 1px solid #a1a1a1;
+}
+
+.habitType {
+    margin-left: 30px;
+}
+.habitValue {
+    margin-left: 30px;
 }

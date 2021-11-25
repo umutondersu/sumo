@@ -71,6 +71,20 @@ function Profile() {
 
         setHabits(hab);
     }
+    const handleValueChange = (event) => {
+        const hab = [...habits];
+        const obj =  hab.filter((element) => {
+            if (element.habit_Id == event.target.id.replace("value_", "")) {
+                return element;
+            }
+        })
+        var index = hab.indexOf(obj[0]);
+        obj[0]["spending_Value"] = event.target.value;
+        hab[index] = obj[0];
+
+        console.log(hab);
+        setHabits(hab);
+    }
 
     const handleIncomeEdit = (event) => {
         event.preventDefault();
@@ -125,21 +139,6 @@ function Profile() {
         });
         setEditHabits(false);
         
-    }
-
-    const handleValueChange = (event) => {
-        const hab = [...habits];
-        const obj =  hab.filter((element) => {
-            if (element.habit_Id == event.target.id.replace("type_", "")) {
-                return element;
-            }
-        })
-        var index = hab.indexOf(obj[0]);
-        obj[0]["spending_Value"] = event.target.value;
-        hab[index] = obj[0];
-
-        console.log(hab);
-        setHabits(hab);
     }
 
     const handleIncomeChange = (event) => {
@@ -269,7 +268,7 @@ function Profile() {
                     <TabPanel value={value} index={0}>
                         <div className="profileHabits">
                             <div className="habitButtons">
-                            <button type="button" onClick={toggleEditHabits}>Edit</button>
+                            <button className="HabitEditBtn" type="button" onClick={toggleEditHabits}>Edit</button>
                             </div>
                             {editHabits ? <form onSubmit={handleEditSubmit}> 
                                 <div className="habitsTable">
@@ -307,8 +306,8 @@ function Profile() {
                                     }
 
                                 </div>
-                                <button type="button" onClick={addHabit}>Add</button>
-                                <button type="submit">Save</button>
+                                <button className="HabitAddBtn" type="button" onClick={addHabit}>Add</button>
+                                <button className="HabitSaveBtn" type="submit">Save</button>
                                 </form> 
                                 
                                 : 
@@ -320,8 +319,8 @@ function Profile() {
                                         {
                                             habits.length > 0 ? habits.map((item,i)=>(
                                             <div key={i} className="Habit">
-                                                    <p>{item.spending_Type}</p>
-                                                    <p>{item.spending_Value}</p>
+                                                    <p className="habitType">{item.spending_Type}</p>
+                                                    <p className="habitValue">{item.spending_Value}</p>
                                             </div>
                                             )) 
                                             : <p>No Habits</p>
