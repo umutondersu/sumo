@@ -28,6 +28,28 @@ router.post('/remove', async (req, res) => {
 
 });
 
+router.post('/edithabits', async (req, res) => {
+    if (req.session.user) {
+        const { income } = req.body;
+        if (income) {
+            db.query("UPDATE customer SET income = ? WHERE user_Id = ?", [income, req.session.user.user_Id], function (err) {
+                if (err) {
+                    res.redirect(url.format({
+                        pathname:"/Profile",
+                        query: {
+                            "error": "database_error",
+                        }
+                    }));
+                    throw err;
+                }
+            });
+        }
+    }
+    else {
+        res.send({error: "editIncomeError"})
+    }
+});
+
 
 router.post('/editincome', async (req, res) => {
     if (req.session.user) {

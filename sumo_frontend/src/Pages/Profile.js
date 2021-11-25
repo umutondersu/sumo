@@ -239,7 +239,7 @@ function Profile() {
                             <div className="habitButtons">
                             <button type="button" onClick={toggleEditHabits}>Edit</button>
                             </div>
-                            {editHabits ? <form action='/profile/edit' method='post'> 
+                            {editHabits ? <form action='/profile/edithabits' method='post'> 
                                 <div className="habitsTable">
                                     {
                                         habits.length > 0 ?
