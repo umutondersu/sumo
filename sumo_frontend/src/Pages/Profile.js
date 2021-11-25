@@ -51,6 +51,8 @@ function Profile() {
     const [addCount, setAddCount] = useState(-1);
     const [editIncome, setEditIncome] = useState(false);
     const [editLocation, setEditLocation] = useState(false);
+    const [newarr, setNewArr] = useState([]);
+    const [oldarr, setOldArr] = useState([]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -93,6 +95,36 @@ function Profile() {
             });
             setEditLocation(false);
         }
+    }
+
+    const handleEditSubmit = (event) => {
+        event.preventDefault();
+
+        console.log(event.target.length);
+        for(let i = 0;  i< event.target.length-2; i = i+3) {
+            if (event.target[i].id.includes('-')) {
+                newarr.push({
+                    habit: event.target[i].value,
+                    value: event.target[i+1].value
+                });
+                
+            }
+            else {
+                oldarr.push({
+                    habit_Id: event.target[i].id.replace("type_", ""),
+                    habit: event.target[i].value,
+                    value: event.target[i+1].value
+                });
+            }
+        }
+        axios.post("/profile/edithabits", {newarr, oldarr});
+        setNewArr([]);
+        setOldArr([]);
+        axios.get("/auth/habits").then((response) => {
+            setHabits(response.data);
+        });
+        setEditHabits(false);
+        
     }
 
     const handleValueChange = (event) => {
@@ -239,7 +271,7 @@ function Profile() {
                             <div className="habitButtons">
                             <button type="button" onClick={toggleEditHabits}>Edit</button>
                             </div>
-                            {editHabits ? <form action='/profile/edithabits' method='post'> 
+                            {editHabits ? <form onSubmit={handleEditSubmit}> 
                                 <div className="habitsTable">
                                     {
                                         habits.length > 0 ?
@@ -247,12 +279,12 @@ function Profile() {
                                                 <div key={i} className="habitsFormInput">
                                                 {item.habit_Id < 0 ? 
                                                     <>
-                                                    <div className="habitsInput">
+                                                    <div className="habitsInput input-group">
                                                         <label htmlFor={`type_${item.habit_Id}`}>Spending Habit:</label>
                                                         <input type="text" name={`type_${item.habit_Id}`} id={`type_${item.habit_Id}`} placeholder="Habit"/>
                                                     </div>
-                                                    <div className="habitsInput">
-                                                        <label htmlFor={`type_${item.habit_Id}`}>Value:</label>
+                                                    <div className="habitsInput input-group">
+                                                        <label htmlFor={`value_${item.habit_Id}`}>Value:</label>
                                                         <input type="number" name={`value_${item.habit_Id}`} id={`value_${item.habit_Id}`} placeholder="Spending"/>
                                                     </div>
                                                     </>
@@ -263,7 +295,7 @@ function Profile() {
                                                         <input type="text" name={`type_${item.habit_Id}`} id={`type_${item.habit_Id}`} value={item.spending_Type} placeholder="Habit" onChange={handleTypeChange} />
                                                     </div>
                                                     <div className="habitsInput">
-                                                        <label htmlFor={`type_${item.habit_Id}`}>Value:</label>
+                                                        <label htmlFor={`value_${item.habit_Id}`}>Value:</label>
                                                         <input type="number" name={`value_${item.habit_Id}`} id={`value_${item.habit_Id}`} value={item.spending_Value} placeholder="Value" onChange={handleValueChange}/>
                                                     </div>
                                                     </>

@@ -30,23 +30,47 @@ router.post('/remove', async (req, res) => {
 
 router.post('/edithabits', async (req, res) => {
     if (req.session.user) {
-        const { income } = req.body;
-        if (income) {
-            db.query("UPDATE customer SET income = ? WHERE user_Id = ?", [income, req.session.user.user_Id], function (err) {
-                if (err) {
-                    res.redirect(url.format({
-                        pathname:"/Profile",
-                        query: {
-                            "error": "database_error",
-                        }
-                    }));
-                    throw err;
-                }
-            });
+        const {newarr, oldarr} = req.body;
+
+        for(let i = 0; i<newarr.length; i++) {
+            if (newarr[i].habit && newarr[i].value) {
+                db.query("INSERT INTO spendinghabits (customer_Id, spending_Type, spending_Value) VALUES(?, ?, ?)", [req.session.user.user_Id, newarr[i].habit, newarr[i].value], function (err) {
+                    if (err) {
+                        res.redirect(url.format({
+                            pathname:"/Profile",
+                            query: {
+                                "error": "database_error",
+                            }
+                        }));
+                        throw err;
+                    }
+                });
+            }
         }
+
+        for(let i = 0; i<oldarr.length; i++) {
+            if (oldarr[i].habit && oldarr[i].value) {
+                db.query("UPDATE spendinghabits SET spending_Type = ?, spending_Value = ? WHERE habit_Id = ?", [oldarr[i].habit, oldarr[i].value, oldarr[i].habit_Id], function (err) {
+                    if (err) {
+                        res.redirect(url.format({
+                            pathname:"/Profile",
+                            query: {
+                                "error": "database_error",
+                            }
+                        }));
+                        throw err;
+                    }
+                });
+            }
+        }
+
+        res.redirect(url.format({
+            pathname:"/Profile",
+        }));
+
     }
     else {
-        res.send({error: "editIncomeError"})
+        res.send({error: "editHabitError"})
     }
 });
 
