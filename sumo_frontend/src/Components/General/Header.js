@@ -7,16 +7,16 @@ function Header() {
     return (
         <>
             <div className="header">
-                <h2><Link to="/" className="Logo">Team.Aleria</Link></h2>
+                <h2><Link to="/" className="Logo">SUMO</Link></h2>
                 <div className="headerLinks">
                     <ul>
-                        <li><Link to="/">HOME</Link></li>
-                        <li><Link to="/summary">STORE</Link></li>
-                        <li><Link to="/About">ABOUT</Link></li>
-                        <li><Link to="/Contact">CONTACT</Link></li>
-                        <li><Link to="/Dashboard">Dashboard</Link></li>
+                        <li><Link to="/">SWITCH ACCOUNT</Link></li>
+                        <li><Link to="/SUMMARY">SUMMARY</Link></li>
+                        <li><Link to="/CALCULATION">CALCULATION</Link></li>
+                        <li><Link to="/ADVISOR">ADVISOR</Link></li>
+                        <li><Link to="/PROFILE">PROFILE</Link></li>
                     </ul>
-                    <a href="/Panel" className="clientAreaButton"><Button variant="contained">Client Area</Button></a>
+                    <a href="/Panel" className="clientAreaButton"><Button variant="contained">EXIT</Button></a>
                 </div>
                 
             </div>
