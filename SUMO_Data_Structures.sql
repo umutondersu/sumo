@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `Admin` (
   `admin_email` VARCHAR(255) NOT NULL,
   `admin_password` VARCHAR(255) NOT NULL,
   `admin_name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY(`admin_Id`),
+  PRIMARY KEY(`admin_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Customer` (
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `Customer` (
   `income` INT(30),
   `location` VARCHAR(255),
   `expert_Id` INT(11) NOT NULL,
-  PRIMARY KEY(`user_Id`),
+  PRIMARY KEY(`user_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Income` (
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `Income` (
   `incpme_value` VARCHAR(255) NOT NULL,
   `income_currency` VARCHAR(255) NOT NULL,
   `income_change` VARCHAR(255),
-  PRIMARY KEY(`income_Id`),
+  PRIMARY KEY(`income_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `SpendingHabits` (
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `Savings` (
   `saving_value` VARCHAR(255) NOT NULL,
   `saving_currency` VARCHAR(255) NOT NULL,
   `saving_change` VARCHAR(255),
-  PRIMARY KEY(`saving_Id`),
+  PRIMARY KEY(`saving_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Expert` (
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `Expert` (
   `expert_password` VARCHAR(255) NOT NULL,
   `expert_name` VARCHAR(255) NOT NULL,
   `expert_age` INT(3) NOT NULL,
-  PRIMARY KEY(`expert_id`),
+  PRIMARY KEY(`expert_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Stocks` (
@@ -62,5 +62,5 @@ CREATE TABLE IF NOT EXISTS `Stocks` (
   `stock_name` VARCHAR(32) NOT NULL,
   `stock_value` VARCHAR(255) NOT NULL,
   `stock_change` VARCHAR(255) NOT NULL,
-  PRIMARY KEY(`stock_Id`),
+  PRIMARY KEY(`stock_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
