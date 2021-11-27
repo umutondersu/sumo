@@ -94,6 +94,7 @@
 .Alert {
     padding: 20px;
     position: absolute;
+    transform: translateY(-50px);
     z-index: 100;
 }
 

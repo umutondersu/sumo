@@ -236,28 +236,26 @@ function Profile() {
 
         axios.get("/auth/profile").then((response) => {
             setProfile(response.data);
+            if(!response.data.income || response.data.income == 0) {
+                setProfileIncome(true);
+            }
         });
 
 
         axios.get("/auth/habits").then((response) => {
             setHabits(response.data);
+            if(response.data.length === 0) {
+                setProfileHabits(true);
+            }
         });
 
-        console.log(habits.length);
-        console.log(profile.income);
+        setShowAlert(true);
     }, []);
     useEffect(() => {
-        setHabits(habits)
-        if(habits.length > 0) {
-            setProfileHabits(true);
-        }
+        setHabits(habits);
     }, [habits])
     useEffect(() => {
-        setProfile(profile)
-        if(profile.income) {
-            setProfileHabits(true);
-        }
-    
+        setProfile(profile);
     
     }, [profile])
 
@@ -279,7 +277,17 @@ function Profile() {
                     
                 </div>
                 {
-                    (profileHabits || profileIncome) && showAlert ? 
+                    ((profileHabits || profileIncome) && showAlert) ? 
+                    <Alert variant="filled" severity="error" sx={{ width: '250px' }} className="Alert">
+                        Please fill your profile information!
+                        <CloseIcon className="closeAlertBtn" onClick={closeAlert}/>
+                            
+                    </Alert>
+                    :
+                    ""
+                }
+                {
+                    (profileIncome && showAlert) ? 
                     <Alert variant="filled" severity="error" sx={{ width: '250px' }} className="Alert">
                         Please fill your profile information!
                         <CloseIcon className="closeAlertBtn" onClick={closeAlert}/>
