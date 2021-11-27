@@ -261,7 +261,6 @@ function Profile() {
                                 <Tab label="Spending Habits" {...a11yProps(0)}/>
                                 <Tab label="Income" {...a11yProps(1)}/>
                                 <Tab label="Location" {...a11yProps(2)}/>
-                                <Tab label="Coming Soon" {...a11yProps(3)} disabled/>
                             </Tabs>
                         </Box>
                     </Box>
