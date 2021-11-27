@@ -8,6 +8,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
+import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -53,6 +55,9 @@ function Profile() {
     const [editLocation, setEditLocation] = useState(false);
     const [newarr, setNewArr] = useState([]);
     const [oldarr, setOldArr] = useState([]);
+    const [profileIncome, setProfileIncome] = useState(false);
+    const [profileHabits, setProfileHabits] = useState(false);
+    const [showAlert, setShowAlert] = useState(true);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -109,6 +114,10 @@ function Profile() {
             });
             setEditLocation(false);
         }
+    }
+
+    const closeAlert = (event) => {
+        setShowAlert(false);
     }
 
     const handleEditSubmit = (event) => {
@@ -233,9 +242,24 @@ function Profile() {
         axios.get("/auth/habits").then((response) => {
             setHabits(response.data);
         });
+
+        console.log(habits.length);
+        console.log(profile.income);
     }, []);
-    useEffect(() => {setHabits(habits)}, [habits])
-    useEffect(() => {setProfile(profile)}, [profile])
+    useEffect(() => {
+        setHabits(habits)
+        if(habits.length > 0) {
+            setProfileHabits(true);
+        }
+    }, [habits])
+    useEffect(() => {
+        setProfile(profile)
+        if(profile.income) {
+            setProfileHabits(true);
+        }
+    
+    
+    }, [profile])
 
 
     return (
@@ -248,10 +272,23 @@ function Profile() {
                             <Avatar color="#44DD8C" name={profile.name} size="150" textSizeRatio={1.25}/>
                         </div>
                         <h2>{profile.name}</h2>
-                        <h4>Income: {editIncome ? "Editing" : <>{profile.income ? profile.income : "Unknown"}</>}</h4>
+                        <h4>Income: {editIncome ? "Editing" : <>{profile.income ? profile.income + "₺" : "Unknown"}</>}</h4>
                         <h4>Subscription: {profile.subscription ? "Subscribed" : "Not Subscribed"}</h4>
                         <h4>Location: {editLocation ? "Editing" : <>{profile.location ? profile.location : "Unknown"}</>}</h4>
                     </div>
+                    
+                </div>
+                {
+                    (profileHabits || profileIncome) && showAlert ? 
+                    <Alert variant="filled" severity="error" sx={{ width: '250px' }} className="Alert">
+                        Please fill your profile information!
+                        <CloseIcon className="closeAlertBtn" onClick={closeAlert}/>
+                            
+                    </Alert>
+                    :
+                    ""
+                }
+                <div className="alert">
                     
                 </div>
                 <div className="profileright">
