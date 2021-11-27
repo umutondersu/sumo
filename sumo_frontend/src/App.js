@@ -9,7 +9,6 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
       </div>
 
       <Route path="/" component={Login} exact/>

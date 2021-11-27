@@ -1,0 +1,68 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "Roboto";
+    font-size: 1rem;
+    font-weight: 600;
+    z-index: 100;
+    width: 100%;
+    margin: 0;
+}
+
+.header h2 {
+    color: var(--text-third);
+    padding: 0px 20px;
+    margin-left: 5rem;
+    text-decoration: none;
+}
+
+.header h2 .Logo{
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.headerLinks {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%!important;
+    margin-right: 5rem;
+}
+
+
+.headerLinks ul {
+    list-style: none;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content;
+    margin: 0;
+}
+
+.headerLinks ul li {
+    margin: 20px 10px;
+    padding: 0px 20px;
+    font-size: 1rem;
+}
+
+
+.headerLinks ul li a {
+    text-decoration: none;
+    color: var(--text-third);
+}
+
+.clientAreaButton button {
+    background-color: var(--primary);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.clientAreaButton button:hover {
+    background-color: var(--primary);
+}
+
+.clientAreaButton {
+    text-decoration: none;
+}
