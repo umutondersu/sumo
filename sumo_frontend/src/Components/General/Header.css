@@ -54,13 +54,13 @@
 }
 
 .clientAreaButton button {
-    background-color: var(--primary);
+    background-color: #44dd8c;
     font-weight: bold;
     text-decoration: none;
 }
 
 .clientAreaButton button:hover {
-    background-color: var(--primary);
+    background-color: #44dd8c;
 }
 
 .clientAreaButton {
