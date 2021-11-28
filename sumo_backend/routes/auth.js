@@ -266,6 +266,80 @@ router.post('/login', body('email').isEmail(), (req, res) => {
 
 });
 
+router.post('/adminlogin', body('email').isEmail(), (req, res) => {
+    const { email, password} = req.body;
+
+    const errors = validationResult(req);
+    if (email) {
+        if (!errors.isEmpty()) {
+            res.json({
+                error: "invalid_email"
+            })
+        }
+    }
+    else {
+        res.json({
+            error: "email_empty"
+        })
+    }
+    
+    if (!password) {
+        res.json({
+            error: "password_empty"
+        })
+    }
+    else {
+        db.query("SELECT * FROM admin WHERE email = ?", [email], async (err, rows, fields) => {
+            if (err) {
+                res.json({
+                    error: "database_error"
+                })
+                throw err;
+            }
+            if (rows[0]) {
+
+                var cPwd = rows[0].password;
+
+                const valid = await bcrypt.compare(password, cPwd);
+                if (!valid){
+                    res.json({
+                        error: "invalid_password"
+                    })
+                }
+                else {
+                    const user = {
+                        email: rows[0].email,
+                        user_Id: rows[0].user_Id,
+                        admin: true
+                    }
+                    const accessToken = jwt.sign(user, process.env.JWT_SECRET);
+                    /*res.redirect(url.format({
+                        pathname:"/Profile",
+                    }));*/
+
+                    req.session.user = user;
+                    
+                    res.send(user);
+                    /*res.json({
+                        name: user.name,
+                        email: user.email,
+                        accessToken
+                    })*/
+                }
+            }
+            else {
+                res.json({
+                    error: "admin_not_found"
+                })
+            }
+        });
+    }
+
+    
+
+
+});
+
 router.post('/logout', authenticateToken, (req, res) => {
 });
 module.exports = router;

@@ -18,7 +18,7 @@ function AdminLogin() {
             password
         }
         axios
-        .post("/auth/login", data)
+        .post("/auth/adminlogin", data)
         .then(res => {
             console.log(res);
 
@@ -44,7 +44,14 @@ function AdminLogin() {
             }
             if (res.data.email) {
                 localStorage.setItem('session', res.data);
-                window.location = "/Profile"
+                if(res.data.admin)
+                {
+                    window.location = "/Admin"
+                }
+                else
+                {
+                    window.location = "/Profile"
+                }
             }
         })
         .catch(err => console.log(err));
@@ -59,7 +66,7 @@ function AdminLogin() {
                 </div>
                 <div className="right">
                     <div className="form">
-                        <h1>Login</h1>
+                        <h1>Admin Login</h1>
                         <p className="errorMessage">{generalMessage}</p>
                         <form onSubmit={handleLogin}>
                             <label htmlFor="email">Email
@@ -73,7 +80,7 @@ function AdminLogin() {
                             <button type="submit">Login</button>
                             
                         </form>
-                        <Link to="Signup" className="button donthaveaccount">Don't have an account?</Link>
+                        <Link to="" className="button donthaveaccount">Are you a customer?</Link>
                     </div>
                 </div>
             </div>

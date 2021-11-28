@@ -6,6 +6,7 @@ import Signup from './Pages/Signup';
 import Profile from './Pages/Profile';
 import Summary from './Pages/Summary';
 import Admin from './Pages/Admin';
+import AdminLogin from './Pages/AdminLogin';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/Profile" component={Profile} exact/>
       <Route path="/Summary" component={Summary} exact/>
       <Route path="/Admin" component={Admin} exact/>
+      <Route path="/Adminlogin" component={AdminLogin} exact/>
     </BrowserRouter>
   );
 }

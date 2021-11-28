@@ -74,6 +74,7 @@ function Login() {
                             
                         </form>
                         <Link to="Signup" className="button donthaveaccount">Don't have an account?</Link>
+                        <Link to="Adminlogin" className="button donthaveaccount">Are you an admin?</Link>
                     </div>
                 </div>
             </div>
