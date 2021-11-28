@@ -4,6 +4,7 @@ import './App.css';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Profile from './Pages/Profile';
+import Admin from './Pages/Admin';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/" component={Login} exact/>
       <Route path="/Signup" component={Signup} exact/>
       <Route path="/Profile" component={Profile} exact/>
+      <Route path="/Admin" component={Admin} exact/>
     </BrowserRouter>
   );
 }
