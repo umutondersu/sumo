@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `Income` (
   `incpme_value` VARCHAR(255) NOT NULL,
   `income_currency` VARCHAR(255) NOT NULL,
   `income_change` VARCHAR(255),
+  'date' DATE,
   PRIMARY KEY(`income_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
