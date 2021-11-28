@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS `Income` (
   `income_Id` INT(11) NOT NULL AUTO_INCREMENT,
   `customer_Id` INT(11) NOT NULL,
   `income_value` VARCHAR(255) NOT NULL,
-  `income_currency` VARCHAR(255) NOT NULL,
   `income_change` VARCHAR(255),
   `date` DATE,
   PRIMARY KEY(`income_Id`),
