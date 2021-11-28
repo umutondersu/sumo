@@ -11,10 +11,11 @@ function Header() {
                 <div className="headerLinks">
                     <ul>
                         <li><Link to="/">SWITCH ACCOUNT</Link></li>
-                        <li><Link to="/SUMMARY">SUMMARY</Link></li>
-                        <li><Link to="/CALCULATION">CALCULATION</Link></li>
-                        <li><Link to="/ADVISOR">ADVISOR</Link></li>
-                        <li><Link to="/PROFILE">PROFILE</Link></li>
+                        <li><Link to="/Profile">PROFILE</Link></li>
+                        <li><Link to="/Summary">SUMMARY</Link></li>
+                        <li><Link to="/Calculation">CALCULATION</Link></li>
+                        <li><Link to="/Advisor">ADVISOR</Link></li>
+                        
                     </ul>
                     <a href="/Panel" className="clientAreaButton"><Button variant="contained">EXIT</Button></a>
                 </div>

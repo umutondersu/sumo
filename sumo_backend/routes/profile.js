@@ -79,10 +79,37 @@ router.post('/editincome', async (req, res) => {
     if (req.session.user) {
         const { income } = req.body;
         if (income) {
+
+            var prevIncome = 0;
+            var currentTime = new Date();
+            db.query("SELECT income FROM customer WHERE user_Id = ?", [req.session.user.user_Id], function (err, rows, fields) {
+                if (err) {
+                    res.redirect(url.format({
+                        pathname:"/Summary",
+                        query: {
+                            "error": "database_error",
+                        }
+                    }));
+                    throw err;
+                }
+                prewIncome = rows[0];
+            });
+
+            db.query("INSERT INTO income (customer_Id, income_Value, income_change, date) VALUES(?, ?, ?, ?)", [req.session.user.user_Id, income, income-prewIncome, date], function (err) {
+                if (err) {
+                    res.redirect(url.format({
+                        pathname:"/Summary",
+                        query: {
+                            "error": "database_error",
+                        }
+                    }));
+                    throw err;
+                }
+            });
             db.query("UPDATE customer SET income = ? WHERE user_Id = ?", [income, req.session.user.user_Id], function (err) {
                 if (err) {
                     res.redirect(url.format({
-                        pathname:"/Profile",
+                        pathname:"/Summary",
                         query: {
                             "error": "database_error",
                         }
