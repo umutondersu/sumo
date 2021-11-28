@@ -5,6 +5,7 @@ import Login from './Pages/Login';
 import Signup from './Pages/Signup';
 import Profile from './Pages/Profile';
 import Summary from './Pages/Summary';
+import Admin from './Pages/Admin';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/Signup" component={Signup} exact/>
       <Route path="/Profile" component={Profile} exact/>
       <Route path="/Summary" component={Summary} exact/>
+      <Route path="/Admin" component={Admin} exact/>
     </BrowserRouter>
   );
 }
