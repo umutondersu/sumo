@@ -1,0 +1,40 @@
+.Calculation {
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.calculationleft {
+    width: 30%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.profileInfo {
+    padding: 1.5rem;
+}
+
+.calculationleft .profileInfo h2 {
+    text-align: center;
+}
+
+.calculationleft .profileInfo h4 {
+    font-weight: 400;
+}
+
+
+.profileInfo .avatar {
+    width: fit-content;
+    margin: auto;
+}
+
+.calculationright {
+    width: 60%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1.5rem;
+}
