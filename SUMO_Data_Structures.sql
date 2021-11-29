@@ -1,9 +1,7 @@
 CREATE TABLE IF NOT EXISTS `Admin` (
   `admin_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `admin_username` VARCHAR(32) NOT NULL,
   `admin_email` VARCHAR(255) NOT NULL,
   `admin_password` VARCHAR(255) NOT NULL,
-  `admin_name` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`admin_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
