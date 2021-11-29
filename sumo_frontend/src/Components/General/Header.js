@@ -15,9 +15,10 @@ function Header() {
                         <li><Link to="/Summary">SUMMARY</Link></li>
                         <li><Link to="/Calculation">CALCULATION</Link></li>
                         <li><Link to="/Advisor">ADVISOR</Link></li>
+
                         
                     </ul>
-                    <a href="/Panel" className="clientAreaButton"><Button variant="contained">EXIT</Button></a>
+                    <a href="/" className="clientAreaButton"><Button variant="contained">EXIT</Button></a>
                 </div>
                 
             </div>

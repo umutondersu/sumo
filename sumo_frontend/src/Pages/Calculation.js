@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import Avatar from 'react-avatar';
-import './Summary.css'
+import './Calculation.css'
 import axios from 'axios';
 import Header from '../Components/General/Header';
 import Tabs from '@mui/material/Tabs';
