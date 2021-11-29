@@ -65,7 +65,7 @@ function Admin() {
                     name: item.name,
                     email: item.email,
                     subscription: item.subscription ? true : false,
-                    expert_Id: item.expert_Id
+                    expert_Id: item.expert_Id ? item.expert_Id : "None"
                 },
                 d[i] = item
 
