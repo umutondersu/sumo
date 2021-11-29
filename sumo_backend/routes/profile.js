@@ -92,10 +92,12 @@ router.post('/editincome', async (req, res) => {
                     }));
                     throw err;
                 }
-                prewIncome = rows[0];
+                if (rows[0].income) {
+                    prevIncome = rows[0];
+                }
             });
 
-            db.query("INSERT INTO income (customer_Id, income_Value, income_change, date) VALUES(?, ?, ?, ?)", [req.session.user.user_Id, income, income-prewIncome, date], function (err) {
+            db.query("INSERT INTO income (customer_Id, income_Value, income_change, date) VALUES(?, ?, ?, ?)", [req.session.user.user_Id, income, income-prevIncome, currentTime], function (err) {
                 if (err) {
                     res.redirect(url.format({
                         pathname:"/Summary",
