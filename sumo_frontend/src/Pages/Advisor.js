@@ -53,7 +53,7 @@ function Advisor() {
                     </div>
                 </div>
                 <div className="advisorright">
-                <h2>Coming Soon.....</h2>
+                <h2>Advisor Page will be Coming Soon.....</h2>
                 </div>
             </div>
             
