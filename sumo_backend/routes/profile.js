@@ -81,7 +81,7 @@ router.post('/editincome', async (req, res) => {
         if (income) {
 
             var prevIncome = 0;
-            var currentTime = new Date();
+            var currentTime = new Date(Date.now());
             db.query("SELECT income FROM customer WHERE user_Id = ?", [req.session.user.user_Id], function (err, rows, fields) {
                 if (err) {
                     res.redirect(url.format({
@@ -92,8 +92,8 @@ router.post('/editincome', async (req, res) => {
                     }));
                     throw err;
                 }
-                if (rows[0].income) {
-                    prevIncome = rows[0];
+                if (rows[0]) {
+                    prevIncome = rows[0].income;
                 }
             });
 
@@ -145,6 +145,34 @@ router.post('/editlocation', async (req, res) => {
     }
     else {
         res.send({error: "editIncomeError"})
+    }
+});
+
+router.get("/income", (req, res) => {
+    if (req.session.user) {
+        db.query("SELECT * FROM income WHERE customer_Id = ?", [req.session.user.user_Id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Summary",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+
+            const income = JSON.parse(JSON.stringify(rows));
+
+            if (income.length > 0) {
+                res.json(rows);
+            }
+            else {
+                res.json([]);
+            }
+        });
+    }
+    else {
+        res.send({});
     }
 });
 

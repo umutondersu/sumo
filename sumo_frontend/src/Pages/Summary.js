@@ -18,6 +18,7 @@ function Summary() {
     const [habits, setHabits] = useState([]);
     const [habitData, setHabitData] = useState([['Habit', 'Value']]);
     const [totalSpending, setTotalSpending] = useState(0);
+    const [incomeArr, setIncomeArr] = useState([['Date', 'Income']]);
 
 
     useEffect(() => {
@@ -50,6 +51,21 @@ function Summary() {
                 setHabitData(habitD);
             }
         });
+
+        axios.get("/profile/income").then((response) => {
+            setIncomeArr(response.data);
+            
+            if(response.data.length > 0) {
+                var incomeD = [...incomeArr];
+                let d = new Date();
+                response.data.map((item, i) => (
+                    d = new Date(item.date),                    
+                    incomeD = [...incomeD, [d.toLocaleDateString(), parseInt(item.income_value)]]
+                ))
+                console.log(incomeD);
+                setIncomeArr(incomeD);
+            }
+        });
     }, []);
 
     return (
@@ -68,17 +84,35 @@ function Summary() {
                     </div>
                 </div>
                 <div className="summaryright">
-                <Chart
-                    width={'500px'}
-                    height={'300px'}
-                    chartType="PieChart"
-                    loader={<div>Loading Chart</div>}
-                    data={habitData}
-                    options={{
-                        title: `Spending Habit Summary \nIncome: ${profile.income}₺, \nTotal Spending: ${totalSpending}₺`,
-                    }}
-                    rootProps={{ 'data-testid': '1' }}
-                    />
+                    <Chart
+                        width={'500px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart</div>}
+                        data={habitData}
+                        options={{
+                            title: `Spending Habit Summary \nIncome: ${profile.income}₺, \nTotal Spending: ${totalSpending}₺`,
+                        }}
+                        rootProps={{ 'data-testid': '1' }}
+                        />
+                    <Chart
+                        width={'600px'}
+                        height={'400px'}
+                        chartType="LineChart"
+                        loader={<div>Loading Chart</div>}
+                        data={incomeArr}
+                        options={{
+                            title: `Income Change Chart`,
+                            hAxis: {
+                            title: 'Date',
+                            },
+                            vAxis: {
+                            title: 'Amount',
+                            },
+                        }}
+                        rootProps={{ 'data-testid': '1' }}
+                        />
+                    
                 </div>
             </div>
             
