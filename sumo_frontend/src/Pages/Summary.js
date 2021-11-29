@@ -68,6 +68,7 @@ function Summary() {
                     </div>
                 </div>
                 <div className="summaryright">
+                <div>
                 <Chart
                     width={'500px'}
                     height={'300px'}
@@ -79,6 +80,10 @@ function Summary() {
                     }}
                     rootProps={{ 'data-testid': '1' }}
                     />
+                </div>
+                <div>
+                    
+                </div>
                 </div>
             </div>
             

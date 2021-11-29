@@ -1,0 +1,40 @@
+.Advisor {
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.advisorleft {
+    width: 30%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.profileInfo {
+    padding: 1.5rem;
+}
+
+.advisorleft .profileInfo h2 {
+    text-align: center;
+}
+
+.advisorleft .profileInfo h4 {
+    font-weight: 400;
+}
+
+
+.profileInfo .avatar {
+    width: fit-content;
+    margin: auto;
+}
+
+.advisorright {
+    width: 60%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1.5rem;
+}
