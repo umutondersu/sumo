@@ -55,7 +55,7 @@ function Calculation() {
                     </div>
                 </div>
                 <div className="calculationright">
-                <h2>Coming Soon.......</h2>
+                <h2>Calculation page will be Coming Soon.......</h2>
                 </div>
             </div>
             
