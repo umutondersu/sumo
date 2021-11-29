@@ -85,6 +85,28 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
 
 
     const hashed = bcrypt.hashSync(password, 10);
+
+
+    db.query("SELECT * FROM admin", function (err, rows, fields) {
+        if (err) {
+            throw err;
+        }
+        if (rows.length == 0) {
+            db.query("INSERT INTO admin (admin_email, admin_password) VALUES(?, ?)", [email, hashed], function (err) {
+                if (err) {
+                    res.redirect(url.format({
+                        pathname:"/Signup",
+                        query: {
+                            "error": "database_error",
+                        }
+                    }));
+                    throw err;
+                }
+            });
+        }
+    });
+
+
     db.query("INSERT INTO customer (email, password, name) VALUES(?, ?, ?)", [email, hashed, cName], function (err, rows, fields) {
         if (err) {
             res.redirect(url.format({
@@ -101,7 +123,6 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
             }));
         }
     });
-
 });
 
 function authenticateToken(req, res, next) {
