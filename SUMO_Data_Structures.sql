@@ -2,14 +2,13 @@ CREATE TABLE IF NOT EXISTS `Admin` (
   `admin_Id` INT(11) NOT NULL AUTO_INCREMENT,
   'admin_username' VARCHAR(255) NOT NULL,
   `admin_password` VARCHAR(255) NOT NULL,
-  'admin_Name' VARCHAR(255),
+  'admin_name' VARCHAR(255),
   'admin_age' VARCHAR(255),
   'admin_location' VARCHAR(255),
   `admin_email` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`admin_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-// testing environment
 CREATE TABLE IF NOT EXISTS `Customer` (
   `user_Id` INT(11) NOT NULL AUTO_INCREMENT,
   'username' VARCHAR(255) NOT NULL,
