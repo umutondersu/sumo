@@ -1,17 +1,17 @@
 CREATE TABLE IF NOT EXISTS `Admin` (
   `admin_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  'admin_username' VARCHAR(255) NOT NULL,
+  `admin_username` VARCHAR(255) NOT NULL,
   `admin_password` VARCHAR(255) NOT NULL,
-  'admin_name' VARCHAR(255),
-  'admin_age' VARCHAR(255),
-  'admin_location' VARCHAR(255),
+  `admin_name` VARCHAR(255),
+  `admin_age` VARCHAR(255),
+  `admin_location` VARCHAR(255),
   `admin_email` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`admin_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Customer` (
   `user_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  'username' VARCHAR(255) NOT NULL,
+  `username` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255),
   `age` INT(3),
@@ -57,10 +57,10 @@ CREATE TABLE IF NOT EXISTS `Expert` (
   `expert_password` VARCHAR(255) NOT NULL,
   `expert_name` VARCHAR(255) NOT NULL,
   `expert_age` INT(3) NOT NULL,
-  'expert_location' VARCHAR(255) NOT NULL,
+  `expert_location` VARCHAR(255) NOT NULL,
   `expert_email` VARCHAR(255) NOT NULL,
-  'expert_job' VARCHAR(255) NOT NULL,
-  'expert_areas' VARCHAR(255) NOT NULL,
+  `expert_job` VARCHAR(255) NOT NULL,
+  `expert_areas` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`expert_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
