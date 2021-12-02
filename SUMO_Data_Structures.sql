@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `Admin` (
   PRIMARY KEY(`admin_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+// testing environment
 CREATE TABLE IF NOT EXISTS `Customer` (
   `user_Id` INT(11) NOT NULL AUTO_INCREMENT,
   'username' VARCHAR(255) NOT NULL,
