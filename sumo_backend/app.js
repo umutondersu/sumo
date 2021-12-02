@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoute = require('./routes/auth');
 const habitsRoute = require('./routes/profile');
+const adminRoute = require('./routes/admin');
 const mysql = require('mysql');
 const db = require('./database/database');
 const jwt = require('jsonwebtoken');
@@ -34,3 +35,4 @@ app.use(
 
 app.use('/auth', authRoute);
 app.use('/profile', habitsRoute);
+app.use('/admin', adminRoute);
