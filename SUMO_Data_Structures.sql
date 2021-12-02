@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `Admin` (
   `admin_Id` INT(11) NOT NULL AUTO_INCREMENT,
   'admin_username' VARCHAR(255) NOT NULL,
   `admin_password` VARCHAR(255) NOT NULL,
-  'admin_name' VARCHAR(255),
+  'admin_Name' VARCHAR(255),
   'admin_age' VARCHAR(255),
   'admin_location' VARCHAR(255),
   `admin_email` VARCHAR(255) NOT NULL,
