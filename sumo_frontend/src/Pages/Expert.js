@@ -139,7 +139,7 @@ function Expert() {
                                 </p>
                                 <ul>
                                     {customerHabits.length > 0 ? customerHabits.map((item,i) => (
-                                        <li key={i}>Habit: {item.spending_Type} Value: {item.spending_Value}</li>
+                                        <li key={i}>Habit: {item.spending_Type} - Value: {item.spending_Value}</li>
                                     ))
                                     :
                                     "No Habits"

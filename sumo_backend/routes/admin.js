@@ -68,7 +68,7 @@ router.get("/getcustomerhabits", (req, res) => {
         db.query("SELECT * FROM spendinghabits WHERE customer_Id = ?", [id], async (err, rows, fields) => {
             if (err) {
                 res.redirect(url.format({
-                    pathname:"/Admin",
+                    pathname:"/Expert",
                     query: {
                         "error": "database_error",
                     }
@@ -86,7 +86,34 @@ router.get("/getcustomerhabits", (req, res) => {
             }
         });
     }
-    
+}
+);
+
+router.get("/getconversation", (req, res) => {
+    const id = req.query.id;
+    if (!id) return;
+    if(req.session.user) {
+        db.query("SELECT * FROM conversation WHERE customer_Id = ?", [id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Expert",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+
+            const users = JSON.parse(JSON.stringify(rows));
+
+            if (users.length > 0) {
+                res.json(rows);
+            }
+            else {
+                res.json([]);
+            }
+        });
+    }
 }
 );
 
