@@ -1,0 +1,55 @@
+.Expert {
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.expertleft {
+    width: 30%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1.5rem;
+}
+
+.customers {
+    width: 100%;
+    overflow-y: auto;
+    height: 600px;
+}
+.customerItem {
+    margin: auto;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.customerItem button {
+    background-color: #44dd8c;
+    border: none;
+    padding: 0.5rem;
+    width: 100%;
+    margin: auto;
+    align-self: center;
+}
+
+.expertright {
+    width: 60%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1.5rem;
+}
+
+.expertright .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #000;
+}
+
+.expertright .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+    color: #000;
+}
+
+.expertright .MuiTabs-indicator {
+    background-color: #44dd8c;
+}
