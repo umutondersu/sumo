@@ -64,6 +64,23 @@ function Expert() {
         setCustomerInfo(userInfo);
     };
 
+    const handleMessageSubmit = (event) => {
+        event.preventDefault();
+        console.log(event.target.message.value);
+        const data = {
+            author: true,
+            message: event.target.message.value,
+            customer_Id: customerInfo.user_Id,
+            expert_Id: profile.user_Id
+        }
+        axios.post("/admin/sendmessage", data).then((resp) => {
+            axios.get("/admin/getconversation?id="+selectedCustomerId).then((response) => {
+                setConversation(response.data);
+            });
+        });
+        event.target.message.value = "";
+    }
+
     useEffect(() => {
         axios.get("/auth/isLogin").then((response) => {
             if (response.data.loggedIn === true) {
@@ -89,6 +106,12 @@ function Expert() {
             setConversation(response.data);
         });
     }, [selectedCustomerId]);
+
+    useEffect(() => {
+        axios.get("/admin/getconversation?id="+selectedCustomerId).then((response) => {
+            setConversation(response.data);
+        });
+    }, [conversation]);
 
     return (
         <div className="ExpertPage">
@@ -151,7 +174,25 @@ function Expert() {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                 {
-                    selectedCustomerId == -1 ? "No Customer Selected" : "Customer Conversation Here"
+                    selectedCustomerId == -1 ? "No Customer Selected" : 
+                    <>
+                    <div className="conversation">
+                        {
+                            conversation.map((item, i) => (<div className={item.author ? "messageexpert" : "messagecustomer"}>
+                                <p className={item.author ? "messageexpertcontent" : "messagecustomercontent"}>{item.message}</p>
+                            </div>))
+                        }
+                        <div className="messagecustomer">
+                            <p className="messagecustomercontent">Customer Message</p>
+                        </div>
+                    </div>
+                    <div className="line"></div>
+                    <form onSubmit={handleMessageSubmit}>
+                        <label htmlFor="message">Message:</label>
+                        <textarea id="message" name="message" className="messageInput"></textarea>
+                        <button type="submit">Send</button>
+                    </form>
+                    </>
                 }
                 </TabPanel>
                 </div>
