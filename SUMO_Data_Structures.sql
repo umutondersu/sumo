@@ -11,16 +11,16 @@ CREATE TABLE IF NOT EXISTS `Admin` (
 
 CREATE TABLE IF NOT EXISTS `Customer` (
   `user_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255),
   `age` INT(3),
   `location` VARCHAR(255),
-  `email` VARCHAR(255) NOT NULL,
-  `subscription` VARCHAR(255),
+  `subscription` BOOLEAN,
   `income` INT(30),
-  `expert_Id` INT(11) NOT NULL,
-  PRIMARY KEY(`user_Id`)
+  `expert_Id` INT(11),
+  PRIMARY KEY(`user_Id`),
+  FOREIGN KEY(`expert_Id`) REFERENCES expert(`expert_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Income` (
@@ -53,14 +53,9 @@ CREATE TABLE IF NOT EXISTS `Savings` (
 
 CREATE TABLE IF NOT EXISTS `Expert` (
   `expert_Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `expert_username` VARCHAR(32) NOT NULL,
+  `expert_email` VARCHAR(255) NOT NULL,
   `expert_password` VARCHAR(255) NOT NULL,
   `expert_name` VARCHAR(255) NOT NULL,
-  `expert_age` INT(3) NOT NULL,
-  `expert_location` VARCHAR(255) NOT NULL,
-  `expert_email` VARCHAR(255) NOT NULL,
-  `expert_job` VARCHAR(255) NOT NULL,
-  `expert_areas` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`expert_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -70,4 +65,15 @@ CREATE TABLE IF NOT EXISTS `Stocks` (
   `stock_value` VARCHAR(255) NOT NULL,
   `stock_change` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`stock_Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Conversation` (
+  `conversation_Id` INT(11) NOT NULL AUTO_INCREMENT,
+  `customer_Id` INT(11) NOT NULL,
+  `expert_Id` INT(11) NOT NULL,
+  `author` BOOLEAN NOT NULL,
+  `message` LONGTEXT NOT NULL,
+  PRIMARY KEY(`conversation_Id`),
+  FOREIGN KEY (`customer_Id`) REFERENCES Customer(`user_Id`),
+  FOREIGN KEY(`expert_Id`) REFERENCES expert(`expert_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

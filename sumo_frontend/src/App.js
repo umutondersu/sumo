@@ -9,6 +9,8 @@ import Admin from './Pages/Admin';
 import AdminLogin from './Pages/AdminLogin';
 import Calculation from './Pages/Calculation';
 import Advisor from './Pages/Advisor';
+import ExpertLogin from './Pages/ExpertLogin';
+import Expert from './Pages/Expert';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
       <Route path="/Summary" component={Summary} exact/>
       <Route path="/Admin" component={Admin} exact/>
       <Route path="/Adminlogin" component={AdminLogin} exact/>
+      <Route path="/Expertlogin" component={ExpertLogin} exact/>
+      <Route path="/Expert" component={Expert} exact/>
       <Route path="/Calculation" component={Calculation} exact/>
       <Route path="/Advisor" component={Advisor} exact/>
     </BrowserRouter>

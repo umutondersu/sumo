@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
 
-function Login() {
+function ExpertLogin() {
     const [generalMessage, setGeneralError] = useState("");
     const [emailMessage, setEmailError] = useState("");
     const [passwordMessage, setPasswordError] = useState("");
@@ -18,7 +18,7 @@ function Login() {
             password
         }
         axios
-        .post("/auth/login", data)
+        .post("/auth/expertlogin", data)
         .then(res => {
             console.log(res);
 
@@ -44,7 +44,14 @@ function Login() {
             }
             if (res.data.email) {
                 localStorage.setItem('session', res.data);
-                window.location = "/Profile"
+                if(res.data.expert)
+                {
+                    window.location = "/Expert"
+                }
+                else
+                {
+                    window.location = "/Profile"
+                }
             }
         })
         .catch(err => console.log(err));
@@ -59,7 +66,7 @@ function Login() {
                 </div>
                 <div className="right">
                     <div className="form">
-                        <h1>Login</h1>
+                        <h1>Expert Login</h1>
                         <p className="errorMessage">{generalMessage}</p>
                         <form onSubmit={handleLogin}>
                             <label htmlFor="email">Email
@@ -73,9 +80,7 @@ function Login() {
                             <button type="submit">Login</button>
                             
                         </form>
-                        <Link to="Signup" className="button donthaveaccount">Don't have an account?</Link>
-                        <Link to="Adminlogin" className="button donthaveaccount">Are you an admin?</Link>
-                        <Link to="Expertlogin" className="button donthaveaccount">Are you an expert?</Link>
+                        <Link to="" className="button donthaveaccount">Are you a customer?</Link>
                     </div>
                 </div>
             </div>
@@ -83,4 +88,4 @@ function Login() {
     )
 }
 
-export default Login
+export default ExpertLogin
