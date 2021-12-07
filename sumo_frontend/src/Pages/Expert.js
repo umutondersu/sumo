@@ -68,6 +68,7 @@ function Expert() {
         event.preventDefault();
         console.log(event.target.message.value);
         const data = {
+            conversation_Id: 0,
             author: true,
             message: event.target.message.value,
             customer_Id: customerInfo.user_Id,
@@ -78,6 +79,8 @@ function Expert() {
                 setConversation(response.data);
             });
         });
+        const conv = [...conversation, data];
+        setConversation(conv);
         event.target.message.value = "";
     }
 
@@ -95,6 +98,7 @@ function Expert() {
             setCustomers(response.data);
         });
     }, []);
+    
     useEffect(() => {
         axios.get("/admin/getcustomers").then((response) => {
             setCustomers(response.data);
@@ -107,11 +111,6 @@ function Expert() {
         });
     }, [selectedCustomerId]);
 
-    useEffect(() => {
-        axios.get("/admin/getconversation?id="+selectedCustomerId).then((response) => {
-            setConversation(response.data);
-        });
-    }, [conversation]);
 
     return (
         <div className="ExpertPage">
@@ -182,9 +181,6 @@ function Expert() {
                                 <p className={item.author ? "messageexpertcontent" : "messagecustomercontent"}>{item.message}</p>
                             </div>))
                         }
-                        <div className="messagecustomer">
-                            <p className="messagecustomercontent">Customer Message</p>
-                        </div>
                     </div>
                     <div className="line"></div>
                     <form onSubmit={handleMessageSubmit}>
