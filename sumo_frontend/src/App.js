@@ -1,5 +1,6 @@
 import Header from './Components/General/Header';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
@@ -9,8 +10,12 @@ import Admin from './Pages/Admin';
 import AdminLogin from './Pages/AdminLogin';
 import Calculation from './Pages/Calculation';
 import Advisor from './Pages/Advisor';
+import Stock from './Pages/Stock';
+import axios from 'axios';
 
 function App() {
+  
+  
   return (
     <BrowserRouter>
       <div className="App">
@@ -24,6 +29,7 @@ function App() {
       <Route path="/Adminlogin" component={AdminLogin} exact/>
       <Route path="/Calculation" component={Calculation} exact/>
       <Route path="/Advisor" component={Advisor} exact/>
+      <Route path="/Stock" component={Stock} exact/>
     </BrowserRouter>
   );
 }
