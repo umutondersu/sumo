@@ -111,12 +111,14 @@ function Advisor() {
         axios.get("/admin/getconversation?id="+profile.user_Id).then((resp) => {
 
             setPinned([]);
+            var p =[];
             resp.data.map((item) => {
                 if(item.pinned) {
-                    const p = [...pinned, item];
-                    setPinned(p);
+                    p = [...p, item];
+                    
                 }
             })
+            setPinned(p);
             setConversation(resp.data);
         });
         
