@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `Conversation` (
   `expert_Id` INT(11) NOT NULL,
   `author` BOOLEAN NOT NULL,
   `message` LONGTEXT NOT NULL,
+  `pinned` BOOLEAN,
   PRIMARY KEY(`conversation_Id`),
   FOREIGN KEY (`customer_Id`) REFERENCES Customer(`user_Id`),
   FOREIGN KEY(`expert_Id`) REFERENCES expert(`expert_Id`)

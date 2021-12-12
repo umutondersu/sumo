@@ -117,11 +117,13 @@ router.get("/getconversation", (req, res) => {
 }
 );
 
+
+
 router.post('/sendmessage', (req, res) => {
-    const { author, message, customer_Id, expert_Id} = req.body;
+    const { author, message, customer_Id, expert_Id, pinned} = req.body;
 
     if (message) {
-        db.query("INSERT INTO conversation (customer_Id, expert_Id, author, message) VALUES(?, ?, ?, ?)", [customer_Id, expert_Id, author, message], async (err, rows, fields) => {
+        db.query("INSERT INTO conversation (customer_Id, expert_Id, author, message, pinned) VALUES(?, ?, ?, ?, ?)", [customer_Id, expert_Id, author, message, pinned], async (err, rows, fields) => {
             if (err) {
                 res.json({
                     error: "database_error"
@@ -130,6 +132,20 @@ router.post('/sendmessage', (req, res) => {
             }
         });
     }
+});
+
+router.post('/setpinned', (req, res) => {
+    const { conversation_Id, pinned} = req.body;
+
+    db.query("UPDATE conversation SET pinned = ? WHERE conversation_Id = ?", [pinned, conversation_Id], async (err) => {
+        if (err) {
+            res.json({
+                error: "database_error"
+            })
+            throw err;
+        }
+        res.json(200)
+    });
 });
 
 

@@ -9,7 +9,35 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
+import { createTheme } from '@mui/material/styles';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
+
+const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#2C905B',
+        main: '#2C905B',
+        dark: '#2C905B',
+        contrastText: '#fff',
+      },
+    },
+  });
+  const themelight = createTheme({
+      palette: {
+        primary: {
+            light: '#44dd8c',
+            main: '#44dd8c',
+            dark: '#44dd8c',
+            contrastText: '#000',
+          },
+      },
+    });
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -312,7 +340,9 @@ function Profile() {
                     <TabPanel value={value} index={0}>
                         <div className="profileHabits">
                             <div className="habitButtons">
-                            <button className="HabitEditBtn" type="button" onClick={toggleEditHabits}>Edit</button>
+                            <Button type="button" onClick={toggleEditHabits} variant="contained" theme={themelight} endIcon={<EditIcon />}>
+                                Edit
+                            </Button>
                             </div>
                             {editHabits ? <form onSubmit={handleEditSubmit}> 
                                 <div className="habitsTable">
@@ -344,14 +374,20 @@ function Profile() {
                                                     </>
                                                 
                                                 }
-                                                    <button type="button" value={item.habit_Id} onClick={removeHabit}>Remove</button>
+                                                <Button type="button" value={item.habit_Id} onClick={removeHabit} variant="contained" theme={themelight} endIcon={<DeleteForeverIcon />}>
+                                                    Remove
+                                                </Button>
                                                 </div>
                                             )) : ""
                                     }
 
                                 </div>
-                                <button className="HabitAddBtn" type="button" onClick={addHabit}>Add</button>
-                                <button className="HabitSaveBtn" type="submit">Save</button>
+                                <Button type="button" onClick={addHabit} variant="contained" theme={themelight} endIcon={<AddIcon />}>
+                                    Add
+                                </Button>
+                                <Button type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
+                                    Save
+                                </Button>
                                 </form> 
                                 
                                 : 
@@ -379,12 +415,16 @@ function Profile() {
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                    <button type="button" onClick={toggleEditIncome}>Edit</button>
+                    <Button type="button" onClick={toggleEditIncome} variant="contained" theme={themelight} endIcon={<EditIcon />}>
+                        Edit
+                    </Button>
                     {editIncome ? 
                         <form onSubmit={handleIncomeEdit}>
                             <label htmlFor="Income">Income</label>
                             {profile.income ? <input type="number" name="income" id="income" value={profile.income} placeholder="Income" onChange={handleIncomeChange} /> : <input type="number" name="income" id="income" placeholder="Income" />}
-                            <button type="submit">Save</button>
+                            <Button type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
+                                Save
+                            </Button>
                         </form>
 
                         :
@@ -395,12 +435,16 @@ function Profile() {
                     </TabPanel>
                     <TabPanel value={value} index={2}>
 
-                    <button type="button" onClick={toggleEditLocation}>Edit</button>
+                    <Button type="button" onClick={toggleEditLocation} variant="contained" theme={themelight} endIcon={<EditIcon />}>
+                        Edit
+                    </Button>
                     {editLocation ? 
                         <form onSubmit={handleLocationEdit}>
                             <label htmlFor="Location">Location</label>
                             {profile.location ? <input type="text" name="location" id="location" value={profile.location} placeholder="Location" onChange={handleLocationChange} /> : <input type="text" name="location" id="location" placeholder="Location" />}
-                            <button type="submit">Save</button>
+                            <Button type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
+                                Save
+                            </Button>
                         </form>
                         :
                         <p>Location: {profile.location}</p>

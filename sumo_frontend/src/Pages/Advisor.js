@@ -4,24 +4,82 @@ import Avatar from 'react-avatar';
 import './Advisor.css'
 import axios from 'axios';
 import Header from '../Components/General/Header';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
-import CloseIcon from '@mui/icons-material/Close';
-import Alert from '@mui/material/Alert';
-import Chart from "react-google-charts";
+import Checkbox from '@mui/material/Checkbox';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import { createTheme } from '@mui/material/styles';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#2C905B',
+      main: '#2C905B',
+      dark: '#2C905B',
+      contrastText: '#fff',
+    },
+  },
+});
+const themelight = createTheme({
+    palette: {
+      primary: {
+          light: '#44dd8c',
+          main: '#44dd8c',
+          dark: '#44dd8c',
+          contrastText: '#000',
+        },
+    },
+  });
+
 
 function Advisor() {
     
     const [profile, setProfile] = useState({});
-    const [habits, setHabits] = useState([]);
-    const [habitData, setHabitData] = useState([['Habit', 'Value']]);
-    const [totalSpending, setTotalSpending] = useState(0);
+    const [conversation, setConversation] = useState([]);
+    const [pinned, setPinned] = useState([]);
+    const [pinsChanged, setPinschanged] = useState(0);
+    const handleChange = (event, newValue) => {
+        const data = {
+            conversation_Id: event.target.value,
+            pinned: event.target.checked
+        }
+        axios.post("/admin/setpinned", data).then((resp) => {
+            axios.get("/admin/getconversation?id="+profile.user_Id).then((response) => {
+                setConversation(response.data);
+            });
+            const p = pinsChanged+1;
+            setPinschanged(p);
+        });
+
+    };
+
+    const handleMessageSubmit = (event) => {
+        event.preventDefault();
+        console.log(event.target.message.value);
+        if(event.target.message.value.length == 0) return;
+        const data = {
+            conversation_Id: 0,
+            author: false,
+            message: event.target.message.value,
+            customer_Id: profile.user_Id,
+            expert_Id: profile.expert_Id,
+            pinned: false
+        }
+        axios.post("/admin/sendmessage", data).then((resp) => {
+            axios.get("/admin/getconversation?id="+profile.user_Id).then((response) => {
+                setConversation(response.data);
+            });
+        });
+        const conv = [...conversation, data];
+        setConversation(conv);
+        event.target.message.value = "";
+    }
 
 
     useEffect(() => {
-        setHabitData([['Habit', 'Value']]);
         axios.get("/auth/isLogin").then((response) => {
             if (response.data.loggedIn === true) {
                 setProfile(response.data.user);
@@ -30,12 +88,42 @@ function Advisor() {
                 window.location = "/"
             }
         });
-
+        
         axios.get("/auth/profile").then((response) => {
             setProfile(response.data);
+            axios.get("/admin/getconversation?id="+response.data.user_Id).then((resp) => {
+
+                setPinned([]);
+                resp.data.map((item) => {
+                    if(item.pinned) {
+                        const p = [...pinned, item];
+                        setPinned(p);
+                    }
+                })
+                setConversation(resp.data);
+            });
         });
 
     }, []);
+
+    useEffect(() => {
+
+        axios.get("/admin/getconversation?id="+profile.user_Id).then((resp) => {
+
+            setPinned([]);
+            resp.data.map((item) => {
+                if(item.pinned) {
+                    const p = [...pinned, item];
+                    setPinned(p);
+                }
+            })
+            setConversation(resp.data);
+        });
+        
+
+    }, [pinsChanged]);
+
+
     
     return (
         <div className="AdvisorPage">
@@ -53,7 +141,53 @@ function Advisor() {
                     </div>
                 </div>
                 <div className="advisorright">
-                <h2>Advisor Page will be Coming Soon.....</h2>
+                    <div className="advisorchat">
+                        <div className="conversation">
+                            <div className="chatlabel">Chat</div>
+                            {
+                                conversation.map((item, i) => (<div key={i} className={item.author ? "advisormessageexpert" : "advisormessagecustomer"}>
+                                    <p className={item.author ? "messageexpertcontent" : "messagecustomercontent"}>{item.message} {item.author ? <Checkbox
+                                        {...label}
+                                        theme={theme}
+                                        icon={<BookmarkBorderIcon />}
+                                        checked={item.pinned ? true : false}
+                                        onChange={handleChange}
+                                        value={item.conversation_Id}
+                                        checkedIcon={<BookmarkIcon />}
+                                    />
+                                    : ""}</p>
+                                </div>))
+                            }
+                        </div>
+                        <div className="line"></div>
+                        <form onSubmit={handleMessageSubmit}>
+                            <label htmlFor="message">Message:</label>
+                            <textarea id="message" name="message" className="messageInput"></textarea>
+                            <Button type="submit" variant="contained" theme={themelight} endIcon={<SendIcon />}>
+                                Send
+                            </Button>
+                        </form>
+                    </div>
+                    <div className="advisorpins">
+                        <div className="pinslabel">Pinned Messages</div>
+                        <div className="pinned">
+                            {
+                                pinned.map((item, i) => (
+                                    <p key={i} className="pinnedmessage">{item.message}
+                                    <Checkbox
+                                    {...label}
+                                    theme={theme}
+                                    icon={<BookmarkBorderIcon />}
+                                    onChange={handleChange}
+                                    checked={true}
+                                    value={item.conversation_Id}
+                                    checkedIcon={<BookmarkIcon />}
+                                    />
+                                    </p>
+                                ))
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
             
