@@ -2,10 +2,9 @@ import React from 'react'
 import './Admin.css'
 import Header from '../Components/General/AdminHeader';
 import axios from 'axios';
-import { useDemoData } from '@mui/x-data-grid-generator';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react'
-import { DataGrid, GridColDef, GridApi, GridCellValue } from '@mui/x-data-grid'; // last 3 are for button
+import { DataGrid } from '@mui/x-data-grid'; // last 3 are for button
 
 const columns = [
     { field: 'name', headerName: 'Name', width: 180 },
@@ -66,7 +65,7 @@ function Admin() {
                     email: item.email,
                     subscription: item.subscription ? true : false,
                     expert_Id: item.expert_Id ? item.expert_Id : "None"
-                },
+                } ,
                 d[i] = item
 
             ))

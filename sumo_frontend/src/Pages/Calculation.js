@@ -4,24 +4,24 @@ import Avatar from 'react-avatar';
 import './Calculation.css'
 import axios from 'axios';
 import Header from '../Components/General/Header';
-import Tabs from '@mui/material/Tabs';
+/*import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
-import Chart from "react-google-charts";
+import Chart from "react-google-charts";*/
 
 function Calculation() {
     
     const [profile, setProfile] = useState({});
-    const [habits, setHabits] = useState([]);
+    /*const [habits, setHabits] = useState([]);
     const [habitData, setHabitData] = useState([['Habit', 'Value']]);
-    const [totalSpending, setTotalSpending] = useState(0);
+    const [totalSpending, setTotalSpending] = useState(0);*/
 
 
     useEffect(() => {
-        setHabitData([['Habit', 'Value']]);
+        //setHabitData([['Habit', 'Value']]);
         axios.get("/auth/isLogin").then((response) => {
             if (response.data.loggedIn === true) {
                 setProfile(response.data.user);
