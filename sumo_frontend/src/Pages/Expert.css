@@ -1,0 +1,103 @@
+.Expert {
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.expertleft {
+    width: 30%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1.5rem;
+}
+
+.customers {
+    width: 100%;
+    overflow-y: auto;
+    height: 600px;
+}
+.customerItem {
+    margin: auto;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.customerItem button {
+    background-color: #44dd8c;
+    border: none;
+    padding: 0.5rem;
+    width: 100%;
+    margin: auto;
+    align-self: center;
+}
+
+.expertright {
+    width: 60%;
+    height: fit-content;
+    border-radius: 10px;
+    background-color: white;
+    padding: 1.5rem;
+}
+
+.expertright .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #000;
+}
+
+.expertright .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+    color: #000;
+}
+
+.expertright .MuiTabs-indicator {
+    background-color: #44dd8c;
+}
+
+.conversation {
+    height: 600px;
+    overflow-y: auto;
+    display: block;
+    display: flex;
+    flex-direction: column;
+}
+
+.messageInput {
+    width: 100%;
+    resize: none;
+    height: 50px;
+}
+
+.messageexpert {
+    background-color: #44dd8c;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px 1rem;
+    width: fit-content;
+    max-width: 50%;
+    margin-right: 0px;
+    margin-bottom: 1rem;
+    align-self: flex-end;
+}
+.messagecustomer {
+    background-color: #c5c5c5;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px 1rem;
+    width: fit-content;
+    max-width: 50%;
+    margin-right: 0px;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+}
+.line {
+    width: 100%;
+    height: 2px;
+    background-color: rgb(165, 165, 165);
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

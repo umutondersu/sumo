@@ -74,11 +74,6 @@ function Admin() {
         });
     }, []);
 
-    const { data } = useDemoData({
-        dataSet: 'Employee',
-        rowLength: 10,
-      });
-
     console.log(userData);
 
     return (
