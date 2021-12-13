@@ -14,10 +14,10 @@ import Chart from "react-google-charts";
 import Coin from './Coin';
 
 function Stock() {
-    
+    axios.defaults.withCredentials = false;
     const [coins, setCoins] = useState([]);
-  const [search, setSearch] = useState('');
-
+    const [search, setSearch] = useState('');
+    
   useEffect(() => {
     axios
       .get(
