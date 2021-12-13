@@ -129,7 +129,9 @@ router.post('/sendmessage', (req, res) => {
                     error: "database_error"
                 })
                 throw err;
+                
             }
+            res.json(200)
         });
     }
 });

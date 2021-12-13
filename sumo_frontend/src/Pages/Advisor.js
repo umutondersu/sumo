@@ -173,7 +173,7 @@ function Advisor() {
                         </form>
                     </div>
                     <div className="advisorpins">
-                        <div className="pinslabel">Pinned Messages</div>
+                        <div className="pinslabel">Bookmarked Messages</div>
                         <div className="pinned">
                             {
                                 pinned.map((item, i) => (
