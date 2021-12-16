@@ -4,19 +4,18 @@ import Avatar from 'react-avatar';
 import './Profile.css'
 import axios from 'axios';
 import Header from '../Components/General/Header';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Alert from '@mui/material/Alert';
 import { createTheme } from '@mui/material/styles';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-
+import { DataGrid } from '@mui/x-data-grid';
 
 const theme = createTheme({
     palette: {
@@ -24,7 +23,7 @@ const theme = createTheme({
         light: '#2C905B',
         main: '#2C905B',
         dark: '#2C905B',
-        contrastText: '#fff',
+        contrastText: '#000',
       },
     },
   });
@@ -78,6 +77,7 @@ function Profile() {
     const [value, setValue] = useState(0);
     const [habits, setHabits] = useState([]);
     const [editHabits, setEditHabits] = useState(false);
+    const [addHabits, setAddHabits] = useState(false);
     const [addCount, setAddCount] = useState(-1);
     const [editIncome, setEditIncome] = useState(false);
     const [editLocation, setEditLocation] = useState(false);
@@ -86,23 +86,58 @@ function Profile() {
     const [profileIncome, setProfileIncome] = useState(false);
     const [profileHabits, setProfileHabits] = useState(false);
     const [showAlert, setShowAlert] = useState(true);
+    const [editing, setEditing] = useState("");
+    const [editingHabit, setEditingHabit] = useState({});
+    const [editingChanged, setEditingChanged] = useState(false);
+    const [tableData, setTableData] = useState([]);
+
+    const columns = [
+        { field: 'spending_Type', headerName: 'Habit', width: 180 },
+        { 
+            field: 'spending_Value', 
+            headerName: 'Value', 
+            width: 180 
+        },
+        {
+            field: "edit",
+            headerName: "Edit",
+            sortable: false,
+            renderCell: (params) => {
+                const onClick = (e) => {
+                    e.stopPropagation(); // don't select this row after clicking
+                    const habit = habits.filter((habit) => habit.habit_Id == e.target.value)[0]
+                    setEditHabits(false);
+                    setEditLocation(false);
+                    setEditIncome(false);
+                    setAddHabits(false);
+                    setEditingHabit(habit);
+                    setEditing("EditHabit");
+                    setEditHabits(true);
+                };
+        
+                return <Button onClick={onClick} value={params.id} endIcon={<EditIcon />} theme={themelight} color="primary">Edit</Button>;
+            }
+        },
+        {
+            field: "remove",
+            headerName: "Remove",
+            sortable: false,
+            renderCell: (params) => {
+        
+                return <Button onClick={removeHabit} value={params.id} endIcon={<DeleteForeverIcon />} color="error">Remove</Button>;
+            }
+        },
+    ];
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
     const handleTypeChange = (event) => {
-        const hab = [...habits];
-        const obj =  hab.filter((element) => {
-            if (element.habit_Id == event.target.id.replace("type_", "")) {
-                return element;
-            }
-        })
-        var index = hab.indexOf(obj[0]);
-        obj[0]["spending_Type"] = event.target.value;
-        hab[index] = obj[0];
-
-        setHabits(hab);
+        var obj = editingHabit;
+        obj["spending_Type"] = event.target.value;
+        setEditingHabit(obj);
+        console.log(editingHabit)
     }
     const handleValueChange = (event) => {
         const hab = [...habits];
@@ -115,7 +150,6 @@ function Profile() {
         obj[0]["spending_Value"] = event.target.value;
         hab[index] = obj[0];
 
-        console.log(hab);
         setHabits(hab);
     }
 
@@ -148,29 +182,38 @@ function Profile() {
         setShowAlert(false);
     }
 
+    const handleAddHabit = (event) => {
+        event.preventDefault();
+        const data = {
+            habit: event.target.type.value,
+            value: event.target.spending.value
+        }
+        if (data.habit && data.value) {
+            axios.post("/profile/addhabit", {data}).then((resp) => {
+                axios.get("/auth/habits").then((response) => {
+                    setHabits(response.data);
+                });
+
+            });
+            setEditHabits(false);
+            setEditIncome(false);
+            setEditLocation(false);
+            setAddHabits(false);
+            setEditing("");
+            setEditingHabit({});
+            setEditingChanged(!editingChanged);
+        }
+    }
+
     const handleEditSubmit = (event) => {
         event.preventDefault();
-
-        console.log(event.target.length);
-        for(let i = 0;  i< event.target.length-2; i = i+3) {
-            if (event.target[i].id.includes('-')) {
-                newarr.push({
-                    habit: event.target[i].value,
-                    value: event.target[i+1].value
-                });
-                
-            }
-            else {
-                oldarr.push({
-                    habit_Id: event.target[i].id.replace("type_", ""),
-                    habit: event.target[i].value,
-                    value: event.target[i+1].value
-                });
-            }
+        const data = {
+            habit_Id: event.target.id.value,
+            habit: event.target.type.value,
+            value: event.target.spending.value
         }
-        axios.post("/profile/edithabits", {newarr, oldarr});
-        setNewArr([]);
-        setOldArr([]);
+
+        axios.post("/profile/edithabits", {data});
         axios.get("/auth/habits").then((response) => {
             setHabits(response.data);
         });
@@ -190,14 +233,49 @@ function Profile() {
         setProfile(prof);
     }
 
-    const toggleEditHabits = (event) => {
+    const toggleEdits = (event) => {
+        setEditHabits(false);
+        setEditIncome(false);
+        setEditLocation(false);
+        setAddHabits(false);
+        setEditing("");
+        setEditingHabit({});
+        setEditingChanged(!editingChanged);
+    }
+
+    const toggleEditHabits = (e) => {
+        if(editHabits) {
+            axios.get("/auth/habits").then((response) => {
+                setHabits(response.data);
+            });
+        }
+        else {
+            const habit = habits.filter((habit) => habit.habit_Id == e.target.value)[0]
+            setEditHabits(false);
+            setEditLocation(false);
+            setEditIncome(false);
+            setAddHabits(false);
+            setEditingHabit(habit);
+            setEditing("EditHabit")
+            setEditHabits(true);
+        }
+        setEditHabits(!editHabits);
+    }
+    const toggleAddHabits = (event) => {
         if(editHabits) {
             axios.get("/auth/habits").then((response) => {
                 setHabits(response.data);
             });
             setAddCount(-1);
         }
-        setEditHabits(!editHabits);
+        else {
+            setEditing("AddHabit");
+            setAddHabits(true);
+            setEditHabits(false)
+            setEditIncome(false);
+            setEditLocation(false);
+        }
+        setAddHabits(!addHabits);
     }
 
     const toggleEditIncome = (event) => {
@@ -206,6 +284,12 @@ function Profile() {
                 setProfile(response.data);
             });
         }
+        else {
+            setEditing("Income");
+            setEditLocation(false);
+            setEditHabits(false);
+            setAddHabits(false);
+        }
         setEditIncome(!editIncome);
     }
     const toggleEditLocation = (event) => {
@@ -213,6 +297,12 @@ function Profile() {
             axios.get("/auth/profile").then((response) => {
                 setProfile(response.data);
             });
+        }
+        else {
+            setEditing("Location");
+            setEditIncome(false);
+            setEditHabits(false);
+            setAddHabits(false);
         }
         setEditLocation(!editLocation);
     }
@@ -228,7 +318,6 @@ function Profile() {
         event.preventDefault();
         var habit_Id = event.target.value;
         if (habit_Id < 0) {
-            console.log(habit_Id)
 
             setHabits(habits.filter((item) => {
                 if (item.habit_Id != habit_Id) {
@@ -269,29 +358,142 @@ function Profile() {
             }
         });
 
-
         axios.get("/auth/habits").then((response) => {
             setHabits(response.data);
+            var d = [];
+            response.data.map((item,i) =>(
+                item = {
+                    id: item.habit_Id,
+                    spending_Type: item.spending_Type,
+                    spending_Value: item.spending_Value,
+                },
+                d =  [...d, item]
+            ))
+            setTableData(d);
             if(response.data.length === 0) {
                 setProfileHabits(true);
             }
         });
-
         setShowAlert(true);
     }, []);
     useEffect(() => {
         setHabits(habits);
-    }, [habits])
+        var d = [];
+        habits.map((item,i) =>(
+            item = {
+                id: item.habit_Id,
+                spending_Type: item.spending_Type,
+                spending_Value: item.spending_Value,
+            },
+            d =  [...d, item]
+        ))
+        setTableData(d);
+    }, [habits]);
+    useEffect(() => {
+        setEditingHabit(editingHabit);
+    }, [editingHabit])
     useEffect(() => {
         setProfile(profile);
-    
     }, [profile])
+    useEffect(() => {
+        axios.get("/auth/profile").then((response) => {
+            setProfile(response.data);
+            if(!response.data.income || response.data.income == 0) {
+                setProfileIncome(true);
+            }
+        });
+        axios.get("/auth/habits").then((response) => {
+            setHabits(response.data);
+            var d = [];
+            response.data.map((item,i) =>(
+                item = {
+                    id: item.habit_Id,
+                    spending_Type: item.spending_Type,
+                    spending_Value: item.spending_Value,
+                },
+                d =  [...d, item]
+            ))
+            setTableData(d);
+            if(response.data.length === 0) {
+                setProfileHabits(true);
+            }
+        });
+    }, [editingChanged])
 
 
     return (
         <div className="ProfilePage">
             <Header />
             <div className="Profile">
+                <div className={editHabits || editIncome || editLocation || addHabits ? "profileeditarea editactive" : "profileeditarea editnotactive"}>
+                    <div className="profileeditclosebutton">
+                        <IconButton type="button" onClick={toggleEdits} variant="contained" theme={themelight}>
+                            <CloseIcon />
+                        </IconButton>
+                    </div>
+                    {editing === "Income" ?
+                        <>
+                            <p className="editingLabel">Edit Income</p>
+                            <form onSubmit={handleIncomeEdit}>
+                                <label htmlFor="Income" className="profileeditformlabel">Income:</label>
+                                {profile.income ? <input className="profileeditforminput" type="number" name="income" id="income" value={profile.income} placeholder="Income" onChange={handleIncomeChange} /> : <input type="number" className="profileeditforminput" name="income" id="income" placeholder="Income" />}
+                                <Button className="profileeditformsave" type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
+                                    Save
+                                </Button>
+                            </form>
+                        </>
+                        :
+                        <></>
+                    }
+                    {editing === "Location" ?
+                        <>
+                            <p className="editingLabel">Edit Location</p>
+                            <form onSubmit={handleLocationEdit}>
+                                <label htmlFor="Location" className="profileeditformlabel">Location</label>
+                                {profile.location ? <input type="text" className="profileeditforminput" name="location" id="location" value={profile.location} placeholder="Location" onChange={handleLocationChange} /> : <input type="text" className="profileeditforminput" name="location" id="location" placeholder="Location" />}
+                                <Button className="profileeditformsave" type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
+                                    Save
+                                </Button>
+                            </form>
+                        </>
+                        :
+                        <></>
+                    }
+                    {editing === "EditHabit" ?
+                        <>
+                            <p className="editingLabel">Edit Habit</p>
+                            <form onSubmit={handleEditSubmit}>
+                                <input type="hidden" name="id" value={editingHabit.habit_Id} />
+                                <label htmlFor="type" className="profileeditformlabel">Spending Habit:</label>
+                                <input type="text" className="profileeditforminput" name="type" id="type" defaultValue={editingHabit.spending_Type}/>
+                                <label htmlFor="value" className="profileeditformlabel">Value:</label>
+                                <input type="number" className="profileeditforminput" name="spending" id="spending" defaultValue={editingHabit.spending_Value}/>
+                                <Button className="profileeditformsave" type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
+                                    Save
+                                </Button>
+                            </form>
+                        </>
+                        :
+                        <></>
+                    }
+                    {editing === "AddHabit" ?
+                        <>
+                            <p className="editingLabel">Add Habit</p>
+                            <form onSubmit={handleAddHabit}>
+                                <label htmlFor="type" className="profileeditformlabel">Spending Habit:</label>
+                                <input type="text" className="profileeditforminput" name="type" id="type" placeholder="Spending Habit"/>
+                                <label htmlFor="value" className="profileeditformlabel">Value:</label>
+                                <input type="number" className="profileeditforminput" name="spending" id="spending" placeholder="Value"/>
+                                <Button className="profileeditformsave" type="submit" variant="contained" theme={themelight} endIcon={<AddIcon />}>
+                                    Add
+                                </Button>
+                            </form>
+                        </>
+                        :
+                        <></>
+                    }
+
+                </div>
                 <div className="profileleft">
                     <div className="profileInfo">
                         <div className="avatar">
@@ -324,134 +526,38 @@ function Profile() {
                     :
                     ""
                 }
-                <div className="alert">
-                    
-                </div>
                 <div className="profileright">
-                    <Box sx={{width: '100%'}}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <Tabs value={value} onChange={handleChange} aria-label="disabled" >
-                                <Tab label="Spending Habits" {...a11yProps(0)}/>
-                                <Tab label="Income" {...a11yProps(1)}/>
-                                <Tab label="Location" {...a11yProps(2)}/>
-                            </Tabs>
-                        </Box>
-                    </Box>
-                    <TabPanel value={value} index={0}>
+                    <div className="righttop">
+                        <div className="rightleft">
+                            <p className="profilerightlabel">Income:</p>
+                            <p className="profilerightvalue">{profile.income}₺
+                                <IconButton type="button" onClick={toggleEditIncome} variant="contained" theme={themelight} color="primary">
+                                    <EditIcon />
+                                </IconButton>
+                            </p>
+                        </div>
+                        <div className="rightright">
+                            <p className="profilerightlabel">Location:</p>
+                            <p className="profilerightvalue">{profile.location}
+                                <IconButton type="button" onClick={toggleEditLocation} variant="contained" theme={themelight} color="primary">
+                                    <EditIcon />
+                                </IconButton>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="rightbottom">
+                        <p className="profilerightlabel">Habits:</p>
                         <div className="profileHabits">
                             <div className="habitButtons">
-                            <Button type="button" onClick={toggleEditHabits} variant="contained" theme={themelight} endIcon={<EditIcon />}>
-                                Edit
-                            </Button>
-                            </div>
-                            {editHabits ? <form onSubmit={handleEditSubmit}> 
-                                <div className="habitsTable">
-                                    {
-                                        habits.length > 0 ?
-                                            habits.map((item,i)=>(
-                                                <div key={i} className="habitsFormInput">
-                                                {item.habit_Id < 0 ? 
-                                                    <>
-                                                    <div className="habitsInput input-group">
-                                                        <label htmlFor={`type_${item.habit_Id}`}>Spending Habit:</label>
-                                                        <input type="text" name={`type_${item.habit_Id}`} id={`type_${item.habit_Id}`} placeholder="Habit"/>
-                                                    </div>
-                                                    <div className="habitsInput input-group">
-                                                        <label htmlFor={`value_${item.habit_Id}`}>Value:</label>
-                                                        <input type="number" name={`value_${item.habit_Id}`} id={`value_${item.habit_Id}`} placeholder="Spending"/>
-                                                    </div>
-                                                    </>
-                                                    :
-                                                    <>
-                                                    <div className="habitsInput">
-                                                        <label htmlFor={`type_${item.habit_Id}`}>Spending Habit:</label>
-                                                        <input type="text" name={`type_${item.habit_Id}`} id={`type_${item.habit_Id}`} value={item.spending_Type} placeholder="Habit" onChange={handleTypeChange} />
-                                                    </div>
-                                                    <div className="habitsInput">
-                                                        <label htmlFor={`value_${item.habit_Id}`}>Value:</label>
-                                                        <input type="number" name={`value_${item.habit_Id}`} id={`value_${item.habit_Id}`} value={item.spending_Value} placeholder="Value" onChange={handleValueChange}/>
-                                                    </div>
-                                                    </>
-                                                
-                                                }
-                                                <Button type="button" value={item.habit_Id} onClick={removeHabit} variant="contained" theme={themelight} endIcon={<DeleteForeverIcon />}>
-                                                    Remove
-                                                </Button>
-                                                </div>
-                                            )) : ""
-                                    }
-
-                                </div>
-                                <Button type="button" onClick={addHabit} variant="contained" theme={themelight} endIcon={<AddIcon />}>
+                                <Button type="button" onClick={toggleAddHabits} variant="contained" theme={themelight} endIcon={<AddIcon />}>
                                     Add
                                 </Button>
-                                <Button type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
-                                    Save
-                                </Button>
-                                </form> 
-                                
-                                : 
-                                
-                                <div className="habitsTable">
-                                {
-                                    habits ?
-                                    <div className="habitsTable">
-                                        {
-                                            habits.length > 0 ? habits.map((item,i)=>(
-                                            <div key={i} className="Habit">
-                                                    <p className="habitType">{item.spending_Type}</p>
-                                                    <p className="habitValue">{item.spending_Value}</p>
-                                            </div>
-                                            )) 
-                                            : <p>No Habits</p>
-                                        }
-                                        </div>
-                                        : <p>No Habits</p>
-                                        
-                                        
-                                }
-                                </div>
-                            }
+                            </div>
+                            <div className="table">
+                                <DataGrid rows={tableData} columns={columns} pageSize={5}/>
+                            </div>
                         </div>
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                    <Button type="button" onClick={toggleEditIncome} variant="contained" theme={themelight} endIcon={<EditIcon />}>
-                        Edit
-                    </Button>
-                    {editIncome ? 
-                        <form onSubmit={handleIncomeEdit}>
-                            <label htmlFor="Income">Income</label>
-                            {profile.income ? <input type="number" name="income" id="income" value={profile.income} placeholder="Income" onChange={handleIncomeChange} /> : <input type="number" name="income" id="income" placeholder="Income" />}
-                            <Button type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
-                                Save
-                            </Button>
-                        </form>
-
-                        :
-                        <p>Income: {profile.income}</p>
-
-                    }
-                        
-                    </TabPanel>
-                    <TabPanel value={value} index={2}>
-
-                    <Button type="button" onClick={toggleEditLocation} variant="contained" theme={themelight} endIcon={<EditIcon />}>
-                        Edit
-                    </Button>
-                    {editLocation ? 
-                        <form onSubmit={handleLocationEdit}>
-                            <label htmlFor="Location">Location</label>
-                            {profile.location ? <input type="text" name="location" id="location" value={profile.location} placeholder="Location" onChange={handleLocationChange} /> : <input type="text" name="location" id="location" placeholder="Location" />}
-                            <Button type="submit" variant="contained" theme={themelight} endIcon={<SaveIcon />}>
-                                Save
-                            </Button>
-                        </form>
-                        :
-                        <p>Location: {profile.location}</p>
-                    
-                    }
-                        
-                    </TabPanel>
+                    </div>
                 </div>
             </div>
         </div>
