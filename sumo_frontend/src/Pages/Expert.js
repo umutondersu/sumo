@@ -7,6 +7,29 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import { createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#2C905B',
+        main: '#2C905B',
+        dark: '#2C905B',
+        contrastText: '#fff',
+      },
+    },
+  });
+  const themelight = createTheme({
+      palette: {
+        primary: {
+            light: '#44dd8c',
+            main: '#44dd8c',
+            dark: '#44dd8c',
+            contrastText: '#000',
+          },
+      },
+    });
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -67,12 +90,14 @@ function Expert() {
     const handleMessageSubmit = (event) => {
         event.preventDefault();
         console.log(event.target.message.value);
+        if(event.target.message.value.length == 0) return;
         const data = {
             conversation_Id: 0,
             author: true,
             message: event.target.message.value,
             customer_Id: customerInfo.user_Id,
-            expert_Id: profile.user_Id
+            expert_Id: profile.user_Id,
+            pinned: false
         }
         axios.post("/admin/sendmessage", data).then((resp) => {
             axios.get("/admin/getconversation?id="+selectedCustomerId).then((response) => {
@@ -177,7 +202,7 @@ function Expert() {
                     <>
                     <div className="conversation">
                         {
-                            conversation.map((item, i) => (<div className={item.author ? "messageexpert" : "messagecustomer"}>
+                            conversation.map((item, i) => (<div key={i} className={item.author ? "messageexpert" : "messagecustomer"}>
                                 <p className={item.author ? "messageexpertcontent" : "messagecustomercontent"}>{item.message}</p>
                             </div>))
                         }
@@ -186,7 +211,9 @@ function Expert() {
                     <form onSubmit={handleMessageSubmit}>
                         <label htmlFor="message">Message:</label>
                         <textarea id="message" name="message" className="messageInput"></textarea>
-                        <button type="submit">Send</button>
+                        <Button type="submit" theme={themelight} variant="contained" endIcon={<SendIcon />}>
+                            Send
+                        </Button>
                     </form>
                     </>
                 }
