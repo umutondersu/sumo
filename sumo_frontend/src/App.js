@@ -13,6 +13,7 @@ import Stock from './Pages/Stock';
 import axios from 'axios';
 import ExpertLogin from './Pages/ExpertLogin';
 import Expert from './Pages/Expert';
+import Currency from './Pages/Currency';
 
 function App() {
   
@@ -33,6 +34,7 @@ function App() {
       <Route path="/Calculation" component={Calculation} exact/>
       <Route path="/Advisor" component={Advisor} exact/>
       <Route path="/Stock" component={Stock} exact/>
+      <Route path="/Currency" component={Currency} exact/>
     </BrowserRouter>
   );
 }
