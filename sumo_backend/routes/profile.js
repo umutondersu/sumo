@@ -28,51 +28,54 @@ router.post('/remove', async (req, res) => {
 
 });
 
+router.post('/addhabit', async (req, res) => {
+    if (req.session.user) {
+        const {data} = req.body;
+
+        db.query("INSERT INTO spendinghabits (customer_Id, spending_Type, spending_Value) VALUES(?, ?, ?)", [req.session.user.user_Id, data.habit, data.value], function (err) {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Profile",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            res.json({success: true});
+        });
+    }
+    else {
+        res.send({error: "editHabitError"})
+    }
+});
+
+
 router.post('/edithabits', async (req, res) => {
     if (req.session.user) {
-        const {newarr, oldarr} = req.body;
+        const {data} = req.body;
 
-        for(let i = 0; i<newarr.length; i++) {
-            if (newarr[i].habit && newarr[i].value) {
-                db.query("INSERT INTO spendinghabits (customer_Id, spending_Type, spending_Value) VALUES(?, ?, ?)", [req.session.user.user_Id, newarr[i].habit, newarr[i].value], function (err) {
-                    if (err) {
-                        res.redirect(url.format({
-                            pathname:"/Profile",
-                            query: {
-                                "error": "database_error",
-                            }
-                        }));
-                        throw err;
+        db.query("UPDATE spendinghabits SET spending_Type = ?, spending_Value = ? WHERE habit_Id = ?", [data.habit, data.value, data.habit_Id], function (err) {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Profile",
+                    query: {
+                        "error": "database_error",
                     }
-                });
+                }));
+                throw err;
             }
-        }
+        });
 
-        for(let i = 0; i<oldarr.length; i++) {
-            if (oldarr[i].habit && oldarr[i].value) {
-                db.query("UPDATE spendinghabits SET spending_Type = ?, spending_Value = ? WHERE habit_Id = ?", [oldarr[i].habit, oldarr[i].value, oldarr[i].habit_Id], function (err) {
-                    if (err) {
-                        res.redirect(url.format({
-                            pathname:"/Profile",
-                            query: {
-                                "error": "database_error",
-                            }
-                        }));
-                        throw err;
-                    }
-                });
-            }
-        }
-
-        res.redirect(url.format({
-            pathname:"/Profile",
-        }));
+        res.json({success: true});
 
     }
     else {
         res.send({error: "editHabitError"})
     }
 });
+
+
 
 
 router.post('/editincome', async (req, res) => {
@@ -119,6 +122,7 @@ router.post('/editincome', async (req, res) => {
                     throw err;
                 }
             });
+            res.json({success: true})
         }
     }
     else {
@@ -141,6 +145,7 @@ router.post('/editlocation', async (req, res) => {
                     throw err;
                 }
             });
+            res.json({success: true})
         }
     }
     else {
