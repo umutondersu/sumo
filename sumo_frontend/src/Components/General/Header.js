@@ -16,6 +16,7 @@ function Header() {
                         <li><Link to="/Calculation">CALCULATION</Link></li>
                         <li><Link to="/Advisor">ADVISOR</Link></li>
                         <li><Link to="/Stock">STOCK</Link></li>
+                        <li><Link to="/Currency">CURRENCY</Link></li>
                     </ul>
                     <a href="/" className="clientAreaButton"><Button variant="contained">EXIT</Button></a>
                 </div>

@@ -37,6 +37,7 @@ function Stock() {
   const filteredCoins = coins.filter(coin =>
     coin.name.toLowerCase().includes(search.toLowerCase())
   );
+  
 
   return (
     
