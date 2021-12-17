@@ -19,24 +19,24 @@ import { DataGrid } from '@mui/x-data-grid';
 
 const theme = createTheme({
     palette: {
-      primary: {
-        light: '#2C905B',
-        main: '#2C905B',
-        dark: '#2C905B',
-        contrastText: '#000',
-      },
+        primary: {
+            light: '#2C905B',
+            main: '#2C905B',
+            dark: '#2C905B',
+            contrastText: '#000',
+        },
     },
-  });
-  const themelight = createTheme({
-      palette: {
+});
+const themelight = createTheme({
+    palette: {
         primary: {
             light: '#44dd8c',
             main: '#44dd8c',
             dark: '#44dd8c',
             contrastText: '#000',
-          },
-      },
-    });
+        },
+    },
+});
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -114,7 +114,6 @@ function Profile() {
                     setEditing("EditHabit");
                     setEditHabits(true);
                 };
-        
                 return <Button onClick={onClick} value={params.id} endIcon={<EditIcon />} theme={themelight} color="primary">Edit</Button>;
             }
         },
