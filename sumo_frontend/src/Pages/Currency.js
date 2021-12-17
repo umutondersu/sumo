@@ -1,67 +1,63 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Avatar from 'react-avatar';
 import './Currency.css';
 import axios from 'axios';
 import Header from '../Components/General/Header';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
-import CloseIcon from '@mui/icons-material/Close';
-import Alert from '@mui/material/Alert';
-import Chart from "react-google-charts";
+import { DataGrid, GridToolbar  } from '@mui/x-data-grid';
 
 
 function Currency() {
-    const [ratesList, setRatesList] = useState([]);
-    const [base, setBase] = useState("EUR");
-  
-    useEffect(() => {
-      getRates("EUR");
-    }, []);
-  
-    const getRates = async (base) => {
-      const res = await axios.get(
-        `http://api.exchangeratesapi.io/v1/latest?access_key=b05f6635fe89a3dbebca111664527e71&base=${base}`
+    const [curData, setCurData] = useState([])
 
-      );
-      const { rates } = res.data;
-  
-      const ratesTemp = [];
-      for (const [symbol, rate] of Object.entries(rates)) {
-        ratesTemp.push({ symbol, rate });
-      }
-      setRatesList(ratesTemp);
-    };
-  
+    const columns = [
+        { field: 'id', headerName: 'Currency', width: 180 },
+        { 
+            field: 'value', 
+            headerName: 'Value', 
+            width: 180 
+        },
+    ];
+
+    useEffect(() => {
+        axios.get("https://freecurrencyapi.net/api/v2/latest?apikey=613c9950-5f45-11ec-b272-c73e03b9dfe3&base_currency=TRY").then((response) => {
+            setCurData([])
+            var c = []
+            Object.keys(response.data.data).forEach(function(key) {
+                var value = response.data.data[key];
+                const data = {
+                    id: key,
+                    value: `${value} ₺`
+                }
+                c = [...c, data];
+            })
+            setCurData(c);
+            console.log(c);
+        });
+    }, []);
+
     return (
-      <div className="Currency">
-           <Header />
-        <select
-          className="custom-select"
-          value={base}
-          onChange={(e) => {
-            const value = e.target.value;
-            setBase(value);
-            getRates(value);
-          }}
-        >
-          {ratesList.map((d) => (
-            <option value={d.symbol} key={d.symbol}>
-              {d.symbol}
-            </option>
-          ))}
-        </select>
-        <ul className="list-group">
-          {ratesList.map((d) => (
-            <li className="list-group-item" key={d.symbol}>
-              {d.symbol} - {d.rate}
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="Currency">
+        <Header />
+        <DataGrid components={{
+            Toolbar: GridToolbar,
+        }}
+        initialState={{
+            filter: {
+                filterModel: {
+                    items: [
+                    {
+                        columnField: 'id',
+                        operatorValue: 'contains',
+                        value: '',
+                    },
+                    ],
+                },
+            },
+            }}
+        rows={curData} columns={columns} pageSize={100}/>
+        
+    </div>
     );
-  }
-  
-  export default Currency;
+}
+
+export default Currency;
