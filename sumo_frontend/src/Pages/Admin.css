@@ -32,12 +32,12 @@
     width: 100%;
     margin-top: 100px;
     position: absolute;
-    left: 40%
+    left: 35%
 }
 .addactive {
     padding: 2rem;
     display: block;
-    width: fit-content;
+    width: 25%;
     height: fit-content;
     background-color: #a9e2c3;
     z-index: 10;
@@ -52,4 +52,26 @@
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.expertaddformlabel {
+    display: block;
+    font-weight: 500;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.expertaddforminput {
+    display: block;
+    height: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 95%;
+    padding: 10px;
+    font-weight: 600;
+}
+
+.expertaddformsave {
+    margin: auto;
 }
