@@ -319,13 +319,13 @@ function Admin() {
                 <p>{error}</p>
                 <p className="addLabel">Add Expert</p>
                 <form onSubmit={handleAddExpert}>
-                    <label htmlFor="type" className="profileeditformlabel">Expert Name:</label>
-                    <input type="text" className="profileeditforminput" name="name" id="name" placeholder="Name"/>
-                    <label htmlFor="value" className="profileeditformlabel">Expert Email:</label>
-                    <input type="email" className="profileeditforminput" name="email" id="email" placeholder="Email"/>
-                    <label htmlFor="value" className="profileeditformlabel">Expert Password:</label>
-                    <input type="password" className="profileeditforminput" name="password" id="password" placeholder="Password"/>
-                    <Button className="profileeditformsave" type="submit" variant="contained" theme={themelight} endIcon={<AddIcon />}>
+                    <label htmlFor="type" className="expertaddformlabel">Expert Name:</label>
+                    <input type="text" className="expertaddforminput" name="name" id="name" placeholder="Name"/>
+                    <label htmlFor="value" className="expertaddformlabel">Expert Email:</label>
+                    <input type="email" className="expertaddforminput" name="email" id="email" placeholder="Email"/>
+                    <label htmlFor="value" className="expertaddformlabel">Expert Password:</label>
+                    <input type="password" className="expertaddforminput" name="password" id="password" placeholder="Password"/>
+                    <Button className="expertaddformsave" type="submit" variant="contained" theme={themelight} endIcon={<AddIcon />}>
                         Add
                     </Button>
                 </form>
@@ -345,7 +345,7 @@ function Admin() {
                     </div>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <Button className="profileeditformsave" onClick={toggleAddExpert} type="submit" variant="contained" theme={themelight} endIcon={<AddIcon />}>
+                    <Button className="expertaddformsave" onClick={toggleAddExpert} type="submit" variant="contained" theme={themelight} endIcon={<AddIcon />}>
                         Add
                     </Button>
                     <div style={{ height: 400, width: '100%' }}>
