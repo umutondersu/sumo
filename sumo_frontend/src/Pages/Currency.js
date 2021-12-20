@@ -4,6 +4,7 @@ import './Currency.css';
 import axios from 'axios';
 import Header from '../Components/General/Header';
 import { DataGrid, GridToolbar  } from '@mui/x-data-grid';
+import Avatar from 'react-avatar';
 
 
 function Currency() {
@@ -26,7 +27,7 @@ function Currency() {
                 var value = response.data.data[key];
                 const data = {
                     id: key,
-                    value: `${value} ₺`
+                    value: `${value}`
                 }
                 c = [...c, data];
             })
@@ -35,26 +36,66 @@ function Currency() {
         });
     }, []);
 
+    const [profile, setProfile] = useState({});
+    /*const [habits, setHabits] = useState([]);
+    const [habitData, setHabitData] = useState([['Habit', 'Value']]);
+    const [totalSpending, setTotalSpending] = useState(0);*/
+
+
+    useEffect(() => {
+        //setHabitData([['Habit', 'Value']]);
+        axios.get("/auth/isLogin").then((response) => {
+            if (response.data.loggedIn === true) {
+                setProfile(response.data.user);
+            }
+            else {
+                window.location = "/"
+            }
+        });
+
+        axios.get("/auth/profile").then((response) => {
+            setProfile(response.data);
+        });
+
+
+        
+    }, []);
+
     return (
-    <div className="Currency">
+        <div className="CurrencyPage">
         <Header />
-        <DataGrid components={{
+        <div className="Currency">
+            <div className="currencyleft">
+                <div className="profileInfo">
+                    <div className="avatar">
+                        <Avatar color="#44DD8C" name={profile.name} size="150" textSizeRatio={1.25}/>
+                    </div>
+                    <h2>{profile.name}</h2>
+                    <h4>Income: {profile.income ? profile.income + "₺" : "Unknown"}</h4>
+                    
+                    <h4>Location: {profile.location ? profile.location : "Unknown"}</h4>
+                </div>
+            </div>
+            <div className="currencyright">
+            <DataGrid components={{
             Toolbar: GridToolbar,
-        }}
-        initialState={{
-            filter: {
-                filterModel: {
-                    items: [
-                    {
-                        columnField: 'id',
-                        operatorValue: 'contains',
-                        value: '',
-                    },
-                    ],
-                },
-            },
             }}
-        rows={curData} columns={columns} pageSize={100}/>
+            initialState={{
+                filter: {
+                    filterModel: {
+                        items: [
+                        {
+                            columnField: 'id',
+                            operatorValue: 'contains',
+                            value: '',
+                        },
+                        ],
+                    },
+                },
+            }}
+            rows={curData} columns={columns} pageSize={100}/>
+            </div>
+        </div>
         
     </div>
     );
