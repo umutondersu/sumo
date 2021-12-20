@@ -345,9 +345,11 @@ function Admin() {
                     </div>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <Button className="expertaddformsave" onClick={toggleAddExpert} type="submit" variant="contained" theme={themelight} endIcon={<AddIcon />}>
+                    <div className='expertaddformsave'>
+                    <Button onClick={toggleAddExpert} type="submit" variant="contained" theme={themelight} endIcon={<AddIcon />}>
                         Add
                     </Button>
+                    </div>
                     <div style={{ height: 400, width: '100%' }}>
                         <DataGrid rows={expertData} columns={expertcolumns} />
                     </div>
