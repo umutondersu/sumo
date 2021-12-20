@@ -23,6 +23,10 @@
     text-decoration: none;
 }
 
+.headerCenter {
+    margin: auto;
+}
+
 .headerLinks {
     display: flex;
     align-items: center;
