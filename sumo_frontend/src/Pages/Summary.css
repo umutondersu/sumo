@@ -38,3 +38,9 @@
     background-color: white;
     padding: 1.5rem;
 }
+
+.chart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

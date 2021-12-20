@@ -16,11 +16,10 @@ CREATE TABLE IF NOT EXISTS `Customer` (
   `name` VARCHAR(255),
   `age` INT(3),
   `location` VARCHAR(255),
-  `subscription` BOOLEAN,
   `income` INT(30),
   `expert_Id` INT(11),
   PRIMARY KEY(`user_Id`),
-  FOREIGN KEY(`expert_Id`) REFERENCES expert(`expert_Id`)
+  FOREIGN KEY(`expert_Id`) REFERENCES expert(`expert_Id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Income` (
@@ -30,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `Income` (
   `income_change` VARCHAR(255),
   `date` DATE,
   PRIMARY KEY(`income_Id`),
-  FOREIGN KEY (`customer_Id`) REFERENCES customer(`user_Id`)
+  FOREIGN KEY (`customer_Id`) REFERENCES customer(`user_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `SpendingHabits` (
@@ -39,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `SpendingHabits` (
   `spending_Type` VARCHAR(255) NOT NULL,
   `spending_Value` VARCHAR(255) NOT NULL,
   PRIMARY KEY(`habit_Id`),
-  FOREIGN KEY (`customer_Id`) REFERENCES Customer(`user_Id`)
+  FOREIGN KEY (`customer_Id`) REFERENCES Customer(`user_Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Savings` (
@@ -75,6 +74,6 @@ CREATE TABLE IF NOT EXISTS `Conversation` (
   `message` LONGTEXT NOT NULL,
   `pinned` BOOLEAN,
   PRIMARY KEY(`conversation_Id`),
-  FOREIGN KEY (`customer_Id`) REFERENCES Customer(`user_Id`),
-  FOREIGN KEY(`expert_Id`) REFERENCES expert(`expert_Id`)
+  FOREIGN KEY (`customer_Id`) REFERENCES Customer(`user_Id`) ON DELETE CASCADE, 
+  FOREIGN KEY(`expert_Id`) REFERENCES expert(`expert_Id`) ON DELETE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
