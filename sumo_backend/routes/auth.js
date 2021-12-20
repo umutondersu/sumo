@@ -206,7 +206,21 @@ router.get('/profile', (req, res)=> {
 
 router.get("/isLogin", (req, res) => {
     if (req.session.user) {
-        res.send({ loggedIn: true, user: req.session.user });
+        db.query("SELECT user_Id, name, email, income, location FROM customer WHERE user_Id = ?", [req.session.user.user_Id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            if (rows[0].email != req.session.user.email) {
+                res.send({ loggedIn: false });
+            }
+            res.send({ loggedIn: true, user: req.session.user });
+        });
     } else {
         res.send({ loggedIn: false });
     }
@@ -412,7 +426,7 @@ router.post('/adminlogin', body('email').isEmail(), (req, res) => {
                         pathname:"/Profile",
                     }));*/
 
-                    req.session.user = user;
+                    req.session.admin = user;
                     
                     res.send(user);
                     /*res.json({

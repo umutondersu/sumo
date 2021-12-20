@@ -38,3 +38,49 @@
     background-color: white;
     padding: 1.5rem;
 }
+
+.calculationright div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.calculationrightleft {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+.calculationrightright {
+    width: 25%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    background-color: #44dd8c;
+    border-radius: 10px;
+}
+
+.calcinput {
+    padding: 1.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.calculationinputlabel {
+    margin: 0px;
+}
+
+.calcinput input {
+    display: block;
+    height: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    font-weight: 600;
+    width: 70%;
+}
+
+.chart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}

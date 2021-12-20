@@ -1,0 +1,55 @@
+.Admin {
+    width: 80%;
+    margin: auto;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 5;
+}
+.admincustomers {
+    width: 100%;
+}
+
+.adminexperts {
+    width: 100%;
+}
+
+.Admin .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #000;
+}
+
+.Admin .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+    color: #000;
+}
+
+.Admin .MuiTabs-indicator {
+    background-color: #44dd8c;
+}
+
+
+.expertaddarea {
+    width: 100%;
+    margin-top: 100px;
+    position: absolute;
+    left: 40%
+}
+.addactive {
+    padding: 2rem;
+    display: block;
+    width: fit-content;
+    height: fit-content;
+    background-color: #a9e2c3;
+    z-index: 10;
+    border-radius: 10px;
+}
+
+.addnotactive {
+    display: none;
+}
+
+.expertaddclosebutton {
+    position: absolute;
+    right: 0;
+    top: 0;
+}

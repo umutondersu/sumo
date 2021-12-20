@@ -11,7 +11,7 @@ dotenv.config();
 
 
 router.get("/getusers", (req, res) => {
-        db.query("SELECT user_Id, name, email, subscription, expert_Id FROM customer", async (err, rows, fields) => {
+        db.query("SELECT user_Id, name, email, subscription, expert_name, customer.expert_Id FROM customer LEFT JOIN expert ON customer.expert_Id = expert.expert_Id", async (err, rows, fields) => {
             if (err) {
                 res.redirect(url.format({
                     pathname:"/Admin",
@@ -33,6 +33,151 @@ router.get("/getusers", (req, res) => {
         });
     }
 );
+
+router.get("/isAdmin", (req, res) => {
+    if (req.session.admin) {
+        db.query("SELECT * FROM admin WHERE admin_Id = ?", [req.session.admin.user_Id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/AdminLogin",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            if (rows[0].admin_email != req.session.admin.email) {
+                res.json({status: "Invalid"});
+            }
+            res.json({status: "success"})
+        });
+    }
+    else {
+        res.json({status: "Invalid"});
+    }
+})
+
+router.post("/addExpert", (req,res) => {
+    if (req.session.admin) {
+        const { name, email, password } = req.body;
+        db.query("SELECT * FROM expert WHERE expert_email = ?", [email], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/ExpertLogin",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            if (rows.length > 0) {
+                res.json({error: "Expert is already registered"})
+            }
+            else {
+                const hashed = bcrypt.hashSync(password, 10);
+                db.query("INSERT INTO expert (expert_name, expert_email, expert_password) VALUES(?, ?, ?)", [name, email, hashed], function (err) {
+                    if (err) {
+                        res.redirect(url.format({
+                            pathname:"/Admin",
+                            query: {
+                                "error": "database_error",
+                            }
+                        }));
+                        throw err;
+                    }
+                });
+                res.json({success: true})
+            }
+        });
+    }
+})
+
+router.get("/isExpert", (req, res) => {
+    if (req.session.user) {
+        db.query("SELECT * FROM expert WHERE expert_Id = ?", [req.session.user.user_Id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/ExpertLogin",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            if (rows[0].expert_email != req.session.user.email) {
+                res.json({status: "Invalid"});
+            }
+            res.json({status: "success"})
+        });
+    }
+    else {
+        res.json({status: "Invalid"});
+    }
+})
+
+router.post("/removeexpert", (req,res) => {
+    const { id } = req.body;
+    if (req.session.admin) {
+        db.query("DELETE FROM expert WHERE expert_Id = ?", [id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Admin",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            res.json({
+                success: true
+            })
+        });
+    }
+});
+
+router.post("/removecustomer", (req,res) => {
+    const { id } = req.body;
+    if (req.session.admin) {
+        db.query("DELETE FROM customer WHERE user_Id = ?", [id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Admin",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            res.json({
+                success: true
+            })
+        });
+    }
+    
+})
+
+router.post("/assignexpert", (req,res) => {
+    const { user_id, expert_id } = req.body;
+    if (req.session.admin) {
+        
+        db.query("UPDATE customer SET expert_Id = ? WHERE user_Id = ?", [expert_id == -1 ? null : expert_id, user_id], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Admin",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            res.json({
+                success: true
+            })
+        });
+    }
+    
+})
+
 
 router.get("/getcustomers", (req, res) => {
     if(req.session.user) {
@@ -58,8 +203,30 @@ router.get("/getcustomers", (req, res) => {
         });
     }
     
-}
-);
+});
+
+router.get("/getexperts", (req,res) => {
+    db.query("SELECT expert_Id, expert_name, expert_email FROM expert", async (err, rows, fields) => {
+        if (err) {
+            res.redirect(url.format({
+                pathname:"/Admin",
+                query: {
+                    "error": "database_error",
+                }
+            }));
+            throw err;
+        }
+
+        const users = JSON.parse(JSON.stringify(rows));
+
+        if (users.length > 0) {
+            res.json(rows);
+        }
+        else {
+            res.json([]);
+        }
+    });
+}) 
 
 router.get("/getcustomerhabits", (req, res) => {
     const id = req.query.id;

@@ -62,7 +62,7 @@ function a11yProps(index) {
         id: `simple-tab-${index}`,
         'aria-controls': `simple-tabpanel-${index}`,
     };
-  }
+}
 
 function Expert() {
 
@@ -110,12 +110,10 @@ function Expert() {
     }
 
     useEffect(() => {
-        axios.get("/auth/isLogin").then((response) => {
-            if (response.data.loggedIn === true) {
-                setProfile(response.data.user);
-            }
-            else {
-                window.location = "/"
+        axios.get("/admin/isExpert").then((response) => {
+
+            if(response.data.status != "success") {
+                window.location = "/ExpertLogin"
             }
         });
 
