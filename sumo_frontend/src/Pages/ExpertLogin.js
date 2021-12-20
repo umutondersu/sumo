@@ -81,6 +81,7 @@ function ExpertLogin() {
                             
                         </form>
                         <Link to="" className="button donthaveaccount">Are you a customer?</Link>
+                        <Link to="Adminlogin" className="button donthaveaccount">Are you an admin?</Link>
                     </div>
                 </div>
             </div>
