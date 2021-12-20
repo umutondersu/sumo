@@ -140,7 +140,6 @@ function Advisor() {
                         </div>
                         <h2>{profile.name}</h2>
                         <h4>Income: {profile.income ? profile.income + "₺" : "Unknown"}</h4>
-                        <h4>Subscription: {profile.subscription ? "Subscribed" : "Not Subscribed"}</h4>
                         <h4>Location: {profile.location ? profile.location : "Unknown"}</h4>
                     </div>
                 </div>
