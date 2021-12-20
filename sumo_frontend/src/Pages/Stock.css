@@ -49,3 +49,37 @@
 .coin-input::placeholder {
   color: #e2e2e2;
 }
+
+
+
+.stockleft {
+  width: 30%;
+  height: fit-content;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.profileInfo {
+  padding: 1.5rem;
+}
+
+.stockleft .profileInfo h2 {
+  text-align: center;
+}
+
+.stockleft .profileInfo h4 {
+  font-weight: 400;
+}
+
+
+.profileInfo .avatar {
+  width: fit-content;
+  margin: auto;
+}
+
+.stockright {
+  width: 60%;
+  border-radius: 10px;    
+  background-color: white;
+  padding: 1,5rem;
+}
