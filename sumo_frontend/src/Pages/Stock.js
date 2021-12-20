@@ -19,8 +19,7 @@ function Stock() {
     const [search, setSearch] = useState('');
     
   useEffect(() => {
-    axios
-      .get(
+    axios.get(
         'https://api.coingecko.com/api/v3/coins/markets?vs_currency=try&order=market_cap_desc&per_page=10&page=1&sparkline=false'
       )
       .then(res => {
@@ -44,7 +43,7 @@ function Stock() {
     <div className='coin-app'>
         <Header />
       <div className='coin-search'>
-        <h1 className='coin-text'>Search a currency</h1>
+        <h1 className='coin-text'>Search a stock</h1>
         <form>
           <input
             className='coin-input'
@@ -54,20 +53,25 @@ function Stock() {
           />
         </form>
       </div>
-      {filteredCoins.map(coin => {
-        return (
-          <Coin
-            key={coin.id}
-            name={coin.name}
-            price={coin.current_price}
-            symbol={coin.symbol}
-            marketcap={coin.total_volume}
-            volume={coin.market_cap}
-            image={coin.image}
-            priceChange={coin.price_change_percentage_24h}
-          />
-        );
-      })}
+        <div className="stocks">
+            <div className="stockstable">
+                {filteredCoins.map(coin => {
+                return (
+                <Coin
+                    key={coin.id}
+                    name={coin.name}
+                    price={coin.current_price}
+                    symbol={coin.symbol}
+                    marketcap={coin.total_volume}
+                    volume={coin.market_cap}
+                    image={coin.image}
+                    priceChange={coin.price_change_percentage_24h}
+                />
+                );
+            })}
+            </div>
+            
+        </div>
     </div>
   );
 }

@@ -51,6 +51,20 @@
 }
 
 
+.stocks {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stockstable {
+    width: fit-content;
+    margin: auto;
+}
+
 
 .stockleft {
   width: 30%;
