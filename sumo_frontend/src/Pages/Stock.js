@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import Chart from "react-google-charts";
-import Coin from './Coin';
+import Coin from '../Components/General/Coin';
 
 function Stock() {
     axios.defaults.withCredentials = false;

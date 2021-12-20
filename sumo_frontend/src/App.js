@@ -33,8 +33,8 @@ function App() {
       <Route path="/Expert" component={Expert} exact/>
       <Route path="/Calculation" component={Calculation} exact/>
       <Route path="/Advisor" component={Advisor} exact/>
-      <Route path="/Stock" component={Stock} exact/>
       <Route path="/Currency" component={Currency} exact/>
+      <Route path="/Stock" component={Stock} exact/>
     </BrowserRouter>
   );
 }
