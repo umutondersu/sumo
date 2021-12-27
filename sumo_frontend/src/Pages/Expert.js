@@ -92,12 +92,13 @@ function Expert() {
         event.preventDefault();
         console.log(event.target.message.value);
         if(event.target.message.value.length == 0) return;
+		console.log(profile);
         const data = {
             conversation_Id: 0,
             author: true,
             message: event.target.message.value,
             customer_Id: customerInfo.user_Id,
-            expert_Id: profile.user_Id,
+            expert_Id: profile.expert_Id,
             pinned: false
         }
         axios.post("/admin/sendmessage", data).then((resp) => {
@@ -116,6 +117,10 @@ function Expert() {
             if(response.data.status != "success") {
                 window.location = "/ExpertLogin"
             }
+        });
+		
+		axios.get("/auth/expertprofile").then((response) => {
+            setProfile(response.data);
         });
 
         axios.get("/admin/getcustomers").then((response) => {
