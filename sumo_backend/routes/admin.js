@@ -11,7 +11,7 @@ dotenv.config();
 
 
 router.get("/getusers", (req, res) => {
-        db.query("SELECT user_Id, name, email, subscription, expert_name, customer.expert_Id FROM customer LEFT JOIN expert ON customer.expert_Id = expert.expert_Id", async (err, rows, fields) => {
+        db.query("SELECT user_Id, name, email, expert_name, customer.expert_Id FROM customer LEFT JOIN expert ON customer.expert_Id = expert.expert_Id", async (err, rows, fields) => {
             if (err) {
                 res.redirect(url.format({
                     pathname:"/Admin",

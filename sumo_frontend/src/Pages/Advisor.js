@@ -57,25 +57,31 @@ function Advisor() {
     };
 
     const handleMessageSubmit = (event) => {
-        event.preventDefault();
-        console.log(event.target.message.value);
-        if(event.target.message.value.length == 0) return;
-        const data = {
-            conversation_Id: 0,
-            author: false,
-            message: event.target.message.value,
-            customer_Id: profile.user_Id,
-            expert_Id: profile.expert_Id,
-            pinned: false
-        }
-        axios.post("/admin/sendmessage", data).then((resp) => {
-            axios.get("/admin/getconversation?id="+profile.user_Id).then((response) => {
-                setConversation(response.data);
-            });
-        });
-        const conv = [...conversation, data];
-        setConversation(conv);
-        event.target.message.value = "";
+		event.preventDefault();
+		if (profile.expert_Id) {
+			
+			console.log(event.target.message.value);
+			if(event.target.message.value.length == 0) return;
+			const data = {
+				conversation_Id: 0,
+				author: false,
+				message: event.target.message.value,
+				customer_Id: profile.user_Id,
+				expert_Id: profile.expert_Id,
+				pinned: false
+			}
+			axios.post("/admin/sendmessage", data).then((resp) => {
+				axios.get("/admin/getconversation?id="+profile.user_Id).then((response) => {
+					setConversation(response.data);
+				});
+			});
+			const conv = [...conversation, data];
+			setConversation(conv);
+			event.target.message.value = "";
+		}
+		else {
+			alert("Your don't have an expert assigned!")
+		}
     }
 
 
