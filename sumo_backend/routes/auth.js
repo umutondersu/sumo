@@ -207,6 +207,35 @@ router.get('/profile', (req, res)=> {
     
 });
 
+router.get('/expertprofile', (req, res)=> {
+    if (req.session.user) {
+        db.query("SELECT * FROM expert WHERE expert_email = ?", [req.session.user.email], async (err, rows, fields) => {
+            if (err) {
+                res.redirect(url.format({
+                    pathname:"/Expert",
+                    query: {
+                        "error": "database_error",
+                    }
+                }));
+                throw err;
+            }
+            else if (rows[0]) {
+                res.json(rows[0]);
+            }
+            else {
+                res.redirect(url.format({
+                    pathname:"/",
+                    query: {
+                        "error": "user_not_found",
+                    }
+                }));
+            }
+        });
+
+    }
+    
+});
+
 router.get("/isLogin", (req, res) => {
     if (req.session.user) {
         db.query("SELECT user_Id, name, email, income, location FROM customer WHERE user_Id = ?", [req.session.user.user_Id], async (err, rows, fields) => {
