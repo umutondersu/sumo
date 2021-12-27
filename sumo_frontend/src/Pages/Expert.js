@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { createTheme } from '@mui/material/styles';
+import Header from '../Components/General/ExpertHeader';
 
 const theme = createTheme({
     palette: {
@@ -137,6 +138,7 @@ function Expert() {
 
     return (
         <div className="ExpertPage">
+			<Header />
             <div className="Expert">
                 <div className="expertleft">
                     <h2>Assigned Customers:</h2>

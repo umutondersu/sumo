@@ -65,6 +65,7 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
                     "error": "password_mismatch",
                 }
             }));
+			return;
         }
     }
     else {
@@ -74,6 +75,7 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
                 "error": "password_empty",
             }
         }));
+		return;
     }
     
     if (name) {
@@ -93,15 +95,16 @@ router.post('/signup', body('email').isEmail(), async (req, res) => {
         }
         if (rows.length == 0) {
             db.query("INSERT INTO admin (admin_email, admin_password) VALUES(?, ?)", [email, hashed], function (err) {
-                if (err) {
-                    res.redirect(url.format({
-                        pathname:"/Signup",
-                        query: {
-                            "error": "database_error",
-                        }
-                    }));
-                    throw err;
-                }
+				if (err) {
+					res.redirect(url.format({
+						pathname:"/Signup",
+						query: {
+							"error": "database_error",
+						}
+					}));
+					throw err;
+					return;
+				}
             });
         }
     });
