@@ -153,7 +153,7 @@ function Calculation() {
                         </div>
                         <div className="calculationrightright">
                             <div className="calcinput">
-                                <h3 className="calculationinputlabel">Income %:</h3>
+                                <h3 className="calculationinputlabel">Income :</h3>
                                 <input type="number"  onChange={handleIncomeChange} value={income}/>
                             </div>
                             <div className="calcinput">
